@@ -221,7 +221,7 @@ alias myip="curl http://ipecho.net/plain; echo"    # get ip address
 
 ### RANDOM COLOR SCRIPT ###
 # Install it from the AUR: shell-color-scripts
-# colorscript random
+colorscript -e panes
 
 ### SETTING THE STARSHIP PROMPT ###
 starship init fish | source
