@@ -16,16 +16,16 @@ Id_6=a2515119-7ee2-471c-b508-3a0951ce3758
 Id_7=bbb4e046-fa1f-4f1a-8739-4b97de0cc639
 Id_8=9b13d630-eea7-4663-9cbc-1f539d4f88fe
 Id_9=df6d3baa-ed0f-457d-939e-95f80cd172d7
-Name_1=I
-Name_10=X
-Name_2=II
-Name_3=III
-Name_4=IV
-Name_5=V
-Name_6=VI
-Name_7=VII
-Name_8=VIII
-Name_9=IX
+Name_1=1
+Name_10=10
+Name_2=2
+Name_3=3
+Name_4=4
+Name_5=5
+Name_6=6
+Name_7=7
+Name_8=8
+Name_9=9
 Number=10
 Rows=1
 
@@ -79,8 +79,12 @@ WobblynessLevel=1
 
 [NightColor]
 Active=true
+DayTemperature=5100
 LatitudeAuto=-29.8556
 LongitudeAuto=31.0449
+Mode=Times
+NightTemperature=3800
+TransitionTime=15
 
 [Plugins]
 bismuthEnabled=true
