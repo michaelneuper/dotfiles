@@ -72,7 +72,7 @@ URxvt*depth: 32
 ! COLORS FOR SXIV
 Sxiv.foreground:   #abb2bf
 Sxiv.background:   #282c34
-Sxiv.font: Fira Code:style=bold:size=11
+Sxiv.font: Jetbrains Mono:style=bold:size=11
 
 
 ! FOR ALL OTHER PROGRAMS USE XRESOURCES
