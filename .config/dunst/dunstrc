@@ -178,11 +178,8 @@
 
     ### Misc/Advanced ###
 
-    # dmenu path.
-    dmenu = /usr/bin/dmenu -p dunst:
-
     # Browser for opening urls in context menu.
-    browser = /usr/bin/brave
+    browser = /usr/bin/firefox
 
     # Always run rule-defined scripts, even if the notification is suppressed
     always_run_script = true
@@ -274,18 +271,18 @@
 [urgency_low]
     # IMPORTANT: colors have to be defined in quotation marks.
     # Otherwise the "#" and following would be interpreted as a comment.
-    background = "#2b2b2b"
+    background = "#282c34"
     foreground = "#ffffff"
     timeout = 5
     # Icon for notifications with low urgency, uncomment to enable
-    icon = /home/brodie/.config/dunst/normal.png
+    icon = ~/.config/dunst/normal.png
 
 [urgency_normal]
-    background = "#2b2b2b"
+    background = "#282c34"
     foreground = "#ffffff"
     timeout = 5
     # Icon for notifications with normal urgency, uncomment to enable
-    icon = /home/brodie/.config/dunst/normal.png
+    icon = ~/.config/dunst/normal.png
 
 [urgency_critical]
     background = "#900000"
@@ -293,7 +290,7 @@
     frame_color = "#ff0000"
     timeout = 5
     # Icon for notifications with critical urgency, uncomment to enable
-    icon = /home/brodie/.config/dunst/critical.png
+    icon = ~/.config/dunst/critical.png
 
 # Every section that isn't one of the above is interpreted as a rules to
 # override settings for certain messages.
