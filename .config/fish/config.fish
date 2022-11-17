@@ -9,6 +9,7 @@ set fish_greeting                                 # Supresses fish's intro messa
 set TERM "xterm-256color"                         # Sets the terminal type
 set EDITOR "nvim"                                 # $EDITOR use neovim in terminal
 set VISUAL "notepadqq"                            # $VISUAL use notepadqq in GUI mode
+set PATH "$HOME/.emacs.d/bin:$PATH"               # Add doom emacs to the path
 
 ### SET MANPAGER
 ### Uncomment only one of these!
