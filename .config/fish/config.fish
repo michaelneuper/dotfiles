@@ -139,9 +139,10 @@ alias .3='cd ../../..'
 alias .4='cd ../../../..'
 alias .5='cd ../../../../..'
 
-# Vim
+# Vim and emacs
 alias vim='nvim'
 alias v='nvim'
+alias em='emacsclient -nw'
 
 # Change "ls" to "exa"
 alias ls='exa -l --color=always --group-directories-first --no-user --no-time --icons' # my preferred listing
