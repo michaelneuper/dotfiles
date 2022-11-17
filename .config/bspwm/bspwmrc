@@ -12,8 +12,10 @@
 #### AUTOSTART ####
 sxhkd &
 nitrogen --restore &
-picom --experimental-backends --backend glx --xrender-sync-fence & # for nvidia gpu
 polybar -q main &
+picom --experimental-backends --backend glx --xrender-sync-fence & # for nvidia gpu
+emacs --daemon &
+onedriver $HOME/OneDrive &
 
 #### MONITORS ####
 bspc monitor -d 1 2 3 4 5 6 7 8 9 10
@@ -57,3 +59,4 @@ xdo below -t $(xdo id -n root) $(xdo id -a polybar-main_HDMI-A-0)
 bspc rule -a Gimp desktop='^8' state=floating follow=on
 bspc rule -a Screenkey manage=off
 bspc rule -a Zathura state=tiled
+bspc rule -a Emacs state=tiled
