@@ -1,8 +1,7 @@
 # Basic Settings
-set ratios 1:2:3
-set previewer ~/.config/lf/preview
-set cleaner ~/.config/lf/cleaner
 set preview true
+set previewer ~/.config/lf/previewer
+set cleaner ~/.config/lf/cleaner
 set drawbox true
 set ignorecase true
 set icons true

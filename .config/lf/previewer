@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+
+FILE="$HOME/.cache/lf/err.png"
+
+function hash_filename {
+    FILE="$HOME/.cache/lf/$(echo ${1%.*} | sed -e 's|/|\!|g').$2"
+}
+
+function draw_clear {
+    >"${UEBERZUG_FIFO}" declare -A -p cmd=( \
+        [action]=remove [identifier]="$UEBERZUG_IDEN" )
+}
+
+function draw_image {
+#    chafa -c full -s ${3}x${2} "$1"
+
+    >"${UEBERZUG_FIFO}" declare -A -p cmd=( \
+        [action]=add [identifier]="$UEBERZUG_IDEN" \
+        [x]="$4" [y]="$5" [width]="$3" [height]="$2" \
+        [scaler]=fit_contain [scaling_position_x]=0.5 [scaling_position_y]=0.5 \
+        [path]="$1" )
+
+    exit 1
+}
+
+function make_video {
+    if [ "${FILE}" -ot "$1" ]; then
+	ffmpegthumbnailer -t 0% -q 3 -s 0 \
+			  -c jpeg -i "$1" -o "${FILE}"
+    fi
+}
+
+function make_pdf {
+    if [ "${FILE}" -ot "$1" ]; then
+	pdftoppm -png -f 1 -l 1 -jpeg -tiffcompression jpeg \
+		 -scale-to-x -1 -scale-to-y 1080 \
+		 -singlefile "$1" "${FILE%.png}"
+    fi
+}
+
+case $(file -b --mime-type "$1") in
+    text/*)
+	draw_clear
+	cat "$1"
+	;;
+    image/*)
+	draw_image "$1" "$2" "$3" "$4" "$5"
+	;;
+    video/*)
+	hash_filename "$1" "jpg"
+	make_video "$1" "$2" "$3"
+	draw_image "${FILE}" "$2" "$3" "$4" "$5"
+	;;
+    audio/*)
+	draw_clear
+	exiftool "$1"
+	;;
+    application/pdf)
+	hash_filename "$1" "png"
+	make_pdf "$1" "$2" "$3"
+	draw_image "${FILE}" "$2" "$3" "$4" "$5"
+	;;
+    application/gzip|application/x-xz)
+	draw_clear
+	tar tf "$1"
+	;;
+    application/zip)
+	draw_clear
+	unzip -Z -1 "$1"
+	;;
+    application/x-sharedlib)
+	draw_clear
+	readelf -h "$1"
+	;;
+    *)
+	draw_clear
+	cat "$1"
+	;;
+esac
+
+exit 0
