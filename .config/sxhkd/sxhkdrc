@@ -1,9 +1,3 @@
-#  ____ _____ 
-# |  _ \_   _|  Derek Taylor (DistroTube)
-# | | | || |  	http://www.youtube.com/c/DistroTube
-# | |_| || |  	http://www.gitlab.com/dwt1/ 
-# |____/ |_|  	
-#        
 # A customized sxhkdrc for the bspwm window manager.
 # https://github.com/baskerville/sxhkd
 # https://github.com/baskerville/bspwm
@@ -138,6 +132,7 @@ super + r
 # open doom emacs
 super + d
 	emacsclient -c -a 'emacs'
+
 # system monitor
-super + '`'
+ctrl + shift + alt
   alacritty -e htop
