@@ -10,7 +10,13 @@ killall -q polybar
 while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
 
 # Launch the bar
-polybar -q main -c "$DIR"/config.ini &
+# polybar -q main -c "$DIR"/config.ini &
+polybar -q workspaces &
+polybar -q win-title &
+polybar -q music &
+polybar -q info &
+polybar -q time &
+polybar -q power &
 
 # IPC settings and test
 ln -sf /tmp/polybar_mqueue.$! /tmp/ipc-main

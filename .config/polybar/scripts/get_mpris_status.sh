@@ -40,9 +40,9 @@ get_info() {
 
         if [ -n "$artist" ]; then
             album=$(extract_meta album)
-            [ -n "$album" ] && echo -n "    $album "
+            [ -n "$album" ] && echo -n "   $album -"
 
-            echo -n " ﴁ   $artist  "
+            echo -n " ﴁ  $artist - "
         fi
 
         echo "$title"
@@ -62,9 +62,9 @@ get_info() {
             windowname=$(xdotool search --name --class --classname "$regex_title" getwindowname 2>/dev/null)
             case $windowname in
                 "") ;; # ignore if empty
-                *Netflix*) echo "netflix";;
-                *YouTube*) echo "youtube";;
-                *"Prime Video"*) echo "prime";;
+                *Netflix*) echo "ﱄ";;
+                *YouTube*) echo "";;
+                *"Prime Video"*) echo "";;
                 *"Corridor Digital"*) echo "corridor";;
                 *) echo "browser";;
             esac;;
@@ -95,5 +95,5 @@ if [ -n "${PAUSED[0]}" ]; then
     send_hook 2
     get_info "${PAUSED[0]}" "$2"
 else
-    [ "$2" = icon ] && echo "none" || echo " 鈴   "
+    [ "$2" = icon ] && echo "none" || echo " 鈴"
 fi

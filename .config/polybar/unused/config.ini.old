@@ -1,9 +1,10 @@
-;; ┌────────────────────────────────────────────────────────────────────┐
-;; │░█▀█░█▀█░█░░░█░█░█▀▄░█▀█░█▀▄░░░░░░░░░█▀█░█▀▄░█▀▀░█░█░▀█▀░█▀▀░█░█░█▀▀│
-;; │░█▀▀░█░█░█░░░░█░░█▀▄░█▀█░█▀▄░░░░▀░░░░█▀▀░█▀▄░█▀▀░▀▄▀░░█░░█▀▀░█▄█░▀▀█│
-;; │░▀░░░▀▀▀░▀▀▀░░▀░░▀▀░░▀░▀░▀░▀░░░░▀░░░░▀░░░▀░▀░▀▀▀░░▀░░▀▀▀░▀▀▀░▀░▀░▀▀▀│
-;; │░Created░By░Aditya░Shakya░@adi1090x░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░│
-;; └────────────────────────────────────────────────────────────────────┘
+;; ┌────────────────────────────────────────────────────────────┐
+;; │░█▀█░█▀█░█░░░█░█░█▀▄░█▀█░█▀▄░░░░░░░░░█▀▀░█▀█░█▀█░█▀▀░▀█▀░█▀▀│
+;; │░█▀▀░█░█░█░░░░█░░█▀▄░█▀█░█▀▄░░░░▀░░░░█░░░█░█░█░█░█▀▀░░█░░█░█│
+;; │░▀░░░▀▀▀░▀▀▀░░▀░░▀▀░░▀░▀░▀░▀░░░░▀░░░░▀▀▀░▀▀▀░▀░▀░▀░░░▀▀▀░▀▀▀│
+;; │░Created░By░Aditya░Shakya░@adi1090x░░░░░░░░░░░░░░░░░░░░░░░░░│
+;; │░Modified By Raven @raven2cz░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░│
+;; └────────────────────────────────────────────────────────────┘
 
 ;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 
@@ -37,10 +38,10 @@ include-file = ~/.config/polybar/user_modules.ini
 ; If unspecified, the application will pick the first one it finds.
 ; $ polybar -m | cut -d ':' -f 1
 ; $ xrandr -q | grep " connected" | cut -d ' ' -f1
-monitor =
+; monitor =
 
 ; Use the specified monitor as a fallback if the main one is not found.
-monitor-fallback =
+; monitor-fallback =
 
 ; Require the monitor to be in connected state
 ; XRandR sometimes reports my monitor as being disconnected (when in use)
@@ -60,15 +61,15 @@ fixed-center = true
 ; Dimension defined as pixel value (e.g. 35) or percentage (e.g. 50%),
 ; the percentage can optionally be extended with a pixel offset like so:
 ; 50%:-10, this will result in a width or height of 50% minus 10 pixels
-width = 100%
-height = 34
+width = 100%:-10px
+height = 30
 
 ; Offset defined as pixel value (e.g. 35) or percentage (e.g. 50%)
 ; the percentage can optionally be extended with a pixel offset like so:
 ; 50%:-10, this will result in an offset in the x or y direction
 ; of 50% minus 10 pixels
-offset-x = 0%
-offset-y = 0%
+offset-x = 5px
+offset-y = 5px
 
 ; Background ARGB color (e.g. #f00, #ff992a, #ddff1023)
 background = ${color.background}
@@ -85,6 +86,8 @@ foreground = ${color.foreground}
 ; doesn't get rounded
 ; Individual top/bottom values can be defined using:
 ;   radius-{top,bottom}
+border-size = 0.0
+radius = 0.0
 radius-top = 0.0
 radius-bottom = 0.0
 
@@ -92,8 +95,8 @@ radius-bottom = 0.0
 ; Individual values can be defined using:
 ;   {overline,underline}-size
 ;   {overline,underline}-color
-line-size = 5
-line-color = ${color.background}
+line-size = 2
+line-color = ${color.foreground}
 
 ; Values applied to all borders
 ; Individual side values can be defined using:
@@ -106,13 +109,13 @@ line-color = ${color.background}
 ; the border is placed withing this area. So you effectively only have the
 ; following horizontal space on the bar:
 ;   width - border-right-size - border-left-size
-border-bottom-size = 0
-border-bottom-color = ${color.foreground}
+border-bottom-size = 0.0
+border-bottom-color = ${color.blue}
 
 ; Number of spaces to add at the beginning/end of the bar
 ; Individual side values can be defined using:
 ;   padding-{left,right}
-padding = 0
+padding = 2
 
 ; Number of spaces to add before/after each module
 ; Individual side values can be defined using:
@@ -130,34 +133,24 @@ module-margin-right = 1
 ;   font-3 = FontAwesome:size=10
 ; See the Fonts wiki page for more details
 
-font-0 = "Iosevka Nerd Font:size=10;4"
-font-1 = "Iosevka Nerd Font:size=10;3"
-font-2 = "feather:size=12;3"
+; font-0 = "Iosevka Nerd Font:size=10;4"
+; font-1 = "Iosevka Nerd Font:size=10;3"
+; font-0 = "SF Mono Ligatues:size=10.5;3"
+; font-0 = "scientifica:size=12;3"
+font-0 = "JetbrainsMono Nerd Font:size=10.5;3"
+font-1 = "feather:size=12;3"
+font-2 = "Apple Color Emoji:size=11;3"
+font-3 = "Iosevka Nerd Font:size=12;4"
+font-4 = "Noto Sans Mono:size=12;3"
 
 ; Modules are added to one of the available blocks
 ;   modules-left = cpu ram
 ;   modules-center = xwindow xbacklight
 ;   modules-right = ipc clock
 
-;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
-
-[bar/top]
-inherit = bar/main
-offset-y = 10
-modules-center =  title sep menu sep term files browser settings sep filesystem sep temperature sep color-switch sep keyboard sep pulseaudio sep backlight sep updates sep powermenu
-enable-ipc = true
-
-[bar/mid]
-inherit = bar/main
-offset-y = 54
-modules-center = volume sep brightness sep battery_bar sep cpu_bar sep filesystem_bar sep memory_bar sep mpd_bar
-enable-ipc = true
-
-[bar/bottom]
-inherit = bar/main
-offset-y = 98
-modules-center = launcher sep workspaces sep cpu sep memory sep mpd sep alsa sep battery sep network sep date sep sysmenu
-enable-ipc = true
+modules-left = arch sep workspaces sep title sep updates
+modules-center = mpris-play-pause mpris
+modules-right = sep alsa sep cpu memory filesystem uptime sep date sep powermenu
 
 ;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 
@@ -186,7 +179,7 @@ locale =
 ;   center
 ;   right
 ;   none
-tray-position = none
+tray-position = center 
 
 ; If true, the bar will not shift its
 ; contents when the tray changes
@@ -206,7 +199,7 @@ tray-offset-x = 0
 tray-offset-y = 0
 
 ; Pad the sides of each tray icon
-tray-padding = 0
+tray-padding = 5
 
 ; Scale factor for tray clients
 tray-scale = 1.0
@@ -220,7 +213,7 @@ tray-scale = 1.0
 ; Currently supported WM's:
 ;   bspwm
 ;   i3 (requires: `override-redirect = true`)
-;;wm-restack =
+wm-restack = i3foreground
 
 ; Set a DPI values used when rendering text
 ; This only affects scalable fonts
@@ -228,7 +221,7 @@ tray-scale = 1.0
 
 ; Enable support for inter-process messaging
 ; See the Messaging wiki page for more details.
-;enable-ipc = true
+enable-ipc = true
 
 ; Fallback click handlers that will be called if
 ; there's no matching module handler found.
@@ -305,6 +298,6 @@ compositing-border = over
 
 ; Enables pseudo-transparency for the bar
 ; If set to true the bar can be transparent without a compositor.
-pseudo-transparency = false
+pseudo-transparency = true 
 
 ;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
