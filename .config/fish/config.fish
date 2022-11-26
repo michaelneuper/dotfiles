@@ -174,9 +174,9 @@ alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 
 # confirm before overwriting something
-alias cp="cp -i"
-alias mv='mv -i'
-alias rm='rm -i'
+# alias cp="cp -i"
+# alias mv='mv -i'
+# alias rm='rm -i'
 
 # adding flags
 alias df='df -h'                          # human-readable sizes
@@ -220,6 +220,8 @@ alias rr='curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/mas
 # Useful aliases
 alias np='notepadqq'                               # notepadqq
 alias myip="curl http://ipecho.net/plain; echo"    # get ip address
+alias wa="tungsten"
+alias pamcan="pacman"
 
 ### RANDOM COLOR SCRIPT ###
 # Install it from the AUR: shell-color-scripts
