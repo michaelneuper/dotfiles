@@ -50,3 +50,4 @@
 ;(unpin! t)
 
 (package! chess)
+(package! nyan-mode)
