@@ -77,6 +77,9 @@ Sxiv.font: Jetbrains Mono:style=bold:size=11
 
 ! FOR ALL OTHER PROGRAMS USE XRESOURCES
 ! This includes xterm and urxvt
+
+Xcursor.theme: macOS-BigSur-White
+
 *.foreground:   #abb2bf
 *.background:   #282c34
 *.cursorColor:  #abb2bf
