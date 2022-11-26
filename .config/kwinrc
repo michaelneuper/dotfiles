@@ -129,7 +129,7 @@ LayoutName=big_icons
 [org.kde.kdecoration2]
 BorderSize=Tiny
 BorderSizeAuto=false
-ButtonsOnLeft=XIA
-ButtonsOnRight=M
+ButtonsOnLeft=
+ButtonsOnRight=X
 library=org.kde.bismuth.decoration
 theme=Bismuth
