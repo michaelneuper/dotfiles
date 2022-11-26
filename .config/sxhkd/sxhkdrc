@@ -3,7 +3,7 @@
 # https://github.com/baskerville/bspwm
 
 
-# WM INDEPENDENT KEYBINDINGS
+### WM INDEPENDENT KEYBINDINGS
 
 # make sxhkd reload its configuration files:
 super + Escape
@@ -21,8 +21,33 @@ super + x
 super + @space
 	rofi -no-lazy-grab -show drun -theme $HOME/.config/rofi/config.rasi
 
+## APPLICATION KEYBINDINGS
 
-# BSPWM HOTKEYS
+# terminal emulator
+super + Return
+	alacritty
+
+# browser
+super + w
+  firefox
+
+# file managers
+super + e
+  alacritty -e lf
+
+super + shift + e
+	nemo
+
+# open doom emacs
+super + d
+	emacsclient -c -a 'emacs'
+
+# system monitor
+ctrl + shift + alt
+  alacritty -e htop
+
+
+### BSPWM HOTKEYS
 
 # quit/restart bspwm
 super + shift + {q,r}
@@ -45,7 +70,7 @@ super + g
 	bspc node -s biggest
 
 
-# STATE/FLAGS
+## STATE/FLAGS
 
 # set the window state
 super + {t,shift + t,f,shift + f}
@@ -56,7 +81,7 @@ super + ctrl + {m,x,y,z}
 	bspc node -g {marked,locked,sticky,private}
 
 
-# FOCUS/SWAP
+## FOCUS/SWAP
 
 # focus the node in the given direction
 super + {_,shift + }{h,j,k,l}
@@ -89,7 +114,7 @@ super + {_,shift + }{1-9,0}
 	bspc {desktop -f,node -d} focused:'^{1-9,10}'
 
 
-# PRESELECT
+## PRESELECT
 
 # preselect the direction
 super + ctrl + {h,j,k,l}
@@ -108,7 +133,7 @@ super + ctrl + shift + space
 	bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
 
 
-# MOVE/RESIZE
+## MOVE/RESIZE
 
 # expand a window by moving one of its side outward
 ctrl + alt + {h,j,k,l}
@@ -122,28 +147,3 @@ ctrl + alt + shift + {h,j,k,l}
 super + {Left,Down,Up,Right}
 	bspc node -v {-20 0,0 20,0 -20,20 0}
 
-
-# APPLICATION KEYBINDINGS
-
-# terminal emulator
-super + Return
-	alacritty
-
-# browser
-super + w
-  firefox
-
-# file managers
-super + e
-  alacritty -e lf
-
-super + shift + e
-	nemo
-
-# open doom emacs
-super + d
-	emacsclient -c -a 'emacs'
-
-# system monitor
-ctrl + shift + alt
-  alacritty -e htop
