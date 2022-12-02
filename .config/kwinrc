@@ -80,8 +80,8 @@ WobblynessLevel=1
 [NightColor]
 Active=true
 DayTemperature=5100
-LatitudeAuto=-29.8556
-LongitudeAuto=31.0449
+LatitudeAuto=-26.3811
+LongitudeAuto=27.8376
 Mode=Times
 NightTemperature=3800
 TransitionTime=15
