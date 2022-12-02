@@ -21,6 +21,13 @@ super + x
 super + @space
 	rofi -no-lazy-grab -show drun -theme $HOME/.config/rofi/config.rasi
 
+# screenshot the entire screen
+Print
+	flameshot full -p ~/Pictures/Screenshots/
+
+Print + super
+	flameshot gui
+
 ## APPLICATION KEYBINDINGS
 
 # terminal emulator
