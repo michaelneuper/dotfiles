@@ -124,6 +124,12 @@ function take --argument number
     head -$number
 end
 
+# Function to print the ipa (international phonetic pronunciation of a word)
+# needs the translate-shell package
+function ipa --argument word
+    trans -d $word | sed -n '2 p'
+end
+
 ### END OF FUNCTIONS ###
 
 
@@ -217,11 +223,17 @@ alias ytv-best="youtube-dl -f bestvideo+bestaudio "
 # the terminal rickroll
 alias rr='curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/master/roll.sh | bash'
 
-# Useful aliases
+# useful aliases
 alias np='notepadqq'                               # notepadqq
 alias myip="curl http://ipecho.net/plain; echo"    # get ip address
 alias wa="tungsten"
 alias pamcan="pacman"
+
+# translate-shell and thesauromatic
+alias syn="thesauromatic"
+alias def="trans -d"
+alias toeng="trans -j -show-original no -show-languages no -show-prompt-message no af:"
+alias toafr="trans -j -show-original no -show-languages no -show-prompt-message no :af"
 
 ### RANDOM COLOR SCRIPT ###
 # Install it from the AUR: shell-color-scripts
