@@ -4,7 +4,7 @@
 # https://github.com/baskerville/bspwm
 
 #### AUTOSTART ####
-sxhkd &
+sxhkd -m 1 &
 nitrogen --restore &
 $HOME/.config/polybar/launch.sh &
 lxpolkit &
@@ -62,3 +62,5 @@ bspc rule -a flameshot state=floating
 bspc rule -a kdeconnect.app state=floating
 bspc rule -a hp-toolbox state=floating
 bspc rule -a system-config-printer state=floating
+bspc rule -a matplotlib state=floating
+bspc rule -a Bottles state=floating
