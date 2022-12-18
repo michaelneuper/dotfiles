@@ -173,5 +173,24 @@ XF86AudioLowerVolume
 XF86AudioMute
 	pactl set-sink-mute 0 toggle
 
+XF86AudioStop
+	playerctl pause
 
+XF86AudioPrev
+	playerctl previous
+
+XF86AudioPlay
+	playerctl play-pause
+
+XF86AudioNext
+	playerctl next
+
+XF86Mail
+	thunderbird
+
+XF86Calculator
+	qalculate-gtk
+
+XF86Search
+	rofi -no-lazy-grab -show drun -theme $HOME/.config/rofi/config.rasi
 
