@@ -19,7 +19,8 @@ super + x
 
 # rofi launcher
 super + @space
-	rofi -no-lazy-grab -show drun -theme $HOME/.config/rofi/config.rasi
+	rofi -no-lazy-grab -show drun -theme $HOME/.config/rofi/dmenu.rasi
+	# rofi -no-lazy-grab -show drun -theme $HOME/.config/rofi/config.rasi
 
 # screenshot the entire screen
 Print
@@ -45,14 +46,21 @@ super + e
 super + shift + e
 	nemo
 
-# open doom emacs
+# doom emacs
 super + d
 	emacsclient -c -a 'emacs'
+
+# visual studio code
+super + v
+	code
 
 # system monitor
 ctrl + shift + alt
   alacritty -e htop
 
+# calculator
+super + c
+	qalculate-gtk
 
 ### BSPWM HOTKEYS
 
@@ -153,4 +161,17 @@ ctrl + alt + shift + {h,j,k,l}
 # move a floating window
 super + {Left,Down,Up,Right}
 	bspc node -v {-20 0,0 20,0 -20,20 0}
+
+## MEDIA KEYS
+
+XF86AudioRaiseVolume
+  amixer set Master 5%+	
+
+XF86AudioLowerVolume
+  amixer set Master 5%-
+
+XF86AudioMute
+	pactl set-sink-mute 0 toggle
+
+
 
