@@ -1,5 +1,5 @@
 /**
- * ROFI Color theme
+ * One Darl Color theme
  * User: Qball
  * Copyright: Dave Davenport
  */
@@ -19,7 +19,7 @@ window {
 }
 horibox {
     orientation: horizontal;
-    children:   [ entry, listview ];
+    children:   [ prompt, entry, listview ];
 }
 listview {
     layout:     horizontal;
