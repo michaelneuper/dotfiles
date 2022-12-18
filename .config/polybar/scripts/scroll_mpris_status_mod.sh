@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cmd="${0%/*}/get_mpris_status_mod.sh $1"
+cmd="${0%/*}/get_mpris_status.sh $1"
 
 zscroll -l 50 \
     --scroll-padding "$(printf ' %.0s' {1..8})" \
