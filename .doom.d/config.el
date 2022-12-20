@@ -22,7 +22,7 @@
 ;; accept. For example:
 ;;
 (setq doom-font (font-spec :family "Fira Code" :size 12.5)
-     doom-variable-pitch-font (font-spec :family "Noto Sans" :size 13))
+     doom-variable-pitch-font (font-spec :family "Noto Sans" :size 15))
 (after! doom-themes
   (setq doom-themes-enable-bold t
         doom-themes-enable-italic t))
