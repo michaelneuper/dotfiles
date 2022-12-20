@@ -95,5 +95,5 @@ if [ -n "${PAUSED[0]}" ]; then
     send_hook 2
     get_info "${PAUSED[0]}" "$2"
 else
-    [ "$2" = icon ] && echo "none" || echo " 鈴"
+    [ "$2" = icon ] && echo "none" || echo ""
 fi
