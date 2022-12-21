@@ -41,7 +41,7 @@
 (setq doom-theme 'doom-one)
 
 ;; Custom banner
-(setq fancy-splash-image "~/.doom.d/doom-banners/splashes/doom/i-am-doom-scaled.png")
+(setq fancy-splash-image "~/.doom.d/doom-banners/splashes/emacs/emacs-e-logo.png")
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -49,7 +49,7 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/Org/")
+(setq org-directory "~/Documents/Org/")
 
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
@@ -83,3 +83,19 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
+
+;; Enable gnuplot
+(after! org
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((gnuplot . t))))
+
+;; Company mode
+(add-hook 'after-init-hook 'global-company-mode)
+
+;; Tabnine
+(add-to-list 'company-backends #'company-tabnine)
+;; Trigger completion immediately.
+(setq company-idle-delay 0)
+;; Number the candidates (use M-1, M-2 etc to select completions).
+(setq company-show-numbers t)
