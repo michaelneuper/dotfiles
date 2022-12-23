@@ -49,4 +49,7 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;(unpin! t)
 
+(package! dashboard)
 (package! chess)
+(package! company)
+(package! company-tabnine)

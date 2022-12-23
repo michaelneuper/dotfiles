@@ -1,13 +1,34 @@
+
+;;  __  __ _   _
+;; |  \/  | \ | |
+;; | \  / |  \| |  Michael Neuper
+;; | |\/| | . ` |  https://michaelneuper.com
+;; | |  | | |\  |  https://github.com/michaelneuper
+;; |_|  |_|_| \_|
+;;
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
 
+;; ; EMACS X WINDOW MANAGER
+;; (require 'exwm)
+;; (require 'exwm-config)
+;; (exwm-config-default)
+;; (require 'exwm-randr)
+;; (setq exwm-randr-workspace-output-plist '(0 "HDMI-0"))
+;; (add-hook 'exwm-randr-screen-change-hook
+;;           (lambda ()
+;;             (start-process-shell-command
+;;              "xrandr" nil "xrandr --output HDMI-0 --mode 1920x1080 --rate 144 --pos 0x0 --rotate normal")))
+;; (exwm-randr-enable)
+;; (require 'exwm-systemtray)
+;; (exwm-systemtray-enable)
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets. It is optional.
-(setq user-full-name "John Doe"
-      user-mail-address "john@doe.com")
+(setq user-full-name "Michael Neuper"
+      user-mail-address "michael@michaelneuper.com")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
 ;;
@@ -84,18 +105,33 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-;; Enable gnuplot
+;; ; ORG ROAM
+(setq org-roam-directory "~/Notes")
+
+;; ; GNUPLOT
 (after! org
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((gnuplot . t))))
 
-;; Company mode
+;; ; COMPANY MODE
 (add-hook 'after-init-hook 'global-company-mode)
+from modules/completion/company/config.el
+(use-package! company  ; `use-package!' is a thin wrapper around `use-package'
+                        ; it is required that you use this in Doom's modules,
+                        ; but not required to be used in your private config.
+:commands (company-mode global-company-mode company-complete
+        company-complete-common company-manual-begin company-grab-line)
+:config
+(setq company-idle-delay nil
+        company-tooltip-limit 10
+        company-dabbrev-downcase nil
+        company-dabbrev-ignore-case nil)
+[...])
 
-;; Tabnine
+;; ; TABNINE
 (add-to-list 'company-backends #'company-tabnine)
 ;; Trigger completion immediately.
 (setq company-idle-delay 0)
 ;; Number the candidates (use M-1, M-2 etc to select completions).
-(setq company-show-numbers t)
+(setq company-show-quick-access t)
