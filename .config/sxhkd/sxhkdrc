@@ -59,8 +59,8 @@ ctrl + shift + alt
   alacritty -e htop
 
 # calculator
-super + c
-	qalculate-gtk
+# super + c
+# 	qalculate-gtk
 
 ### BSPWM HOTKEYS
 
@@ -69,7 +69,7 @@ super + shift + {q,r}
 	bspc {quit,wm -r}
 
 # close and kill
-super + q
+super + c
 	bspc node -c
 
 # alternate between the tiled and monocle layout
@@ -89,7 +89,7 @@ super + g
 
 # set the window state
 super + {t,shift + t,f,shift + f}
-	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
+	bspc node -t {tiled,pseudo_tiled,fullscreen,floating}
 
 # set the node flags
 super + ctrl + {m,x,y,z}
