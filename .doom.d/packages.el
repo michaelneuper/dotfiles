@@ -52,4 +52,5 @@
 (package! dashboard)
 (package! chess)
 (package! company)
-(package! company-tabnine)
+(unpin! org-roam)
+(package! org-roam-ui)
