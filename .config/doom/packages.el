@@ -49,8 +49,8 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;(unpin! t)
 
+(unpin! org-roam)
 (package! dashboard)
 (package! chess)
-(package! company)
-(unpin! org-roam)
+(package! company-lsp)
 (package! org-roam-ui)
