@@ -61,7 +61,7 @@
 (setq doom-theme 'doom-one)
 
 ;; Custom banner
-(setq fancy-splash-image "~/.doom.d/doom-banners/splashes/emacs/emacs-e-logo.png")
+(setq fancy-splash-image "~/.config/doom/doom-banners/splashes/emacs/emacs-e-logo.png")
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
