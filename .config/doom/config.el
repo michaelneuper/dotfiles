@@ -1,4 +1,4 @@
-;; __  __ _   _
+;;  __  __ _   _
 ;; |  \/  | \ | |
 ;; | \  / |  \| |  Michael Neuper
 ;; | |\/| | . ` |  https://michaelneuper.com
@@ -6,23 +6,9 @@
 ;; |_|  |_|_| \_|
 ;;
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
-
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
 
-;; ; EMACS X WINDOW MANAGER
-;; (require 'exwm)
-;; (require 'exwm-config)
-;; (exwm-config-default)
-;; (require 'exwm-randr)
-;; (setq exwm-randr-workspace-output-plist '(0 "HDMI-0"))
-;; (add-hook 'exwm-randr-screen-change-hook
-;;           (lambda ()
-;;             (start-process-shell-command
-;;              "xrandr" nil "xrandr --output HDMI-0 --mode 1920x1080 --rate 144 --pos 0x0 --rotate normal")))
-;; (exwm-randr-enable)
-;; (require 'exwm-systemtray)
-;; (exwm-systemtray-enable)
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets. It is optional.
@@ -60,7 +46,7 @@
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-one)
 
-;; Custom banner
+;; Doom banner
 (setq fancy-splash-image "~/.config/doom/doom-banners/splashes/emacs/emacs-e-logo.png")
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
@@ -69,7 +55,7 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/Documents/Org/")
+(setq org-directory "~/Documents/org")
 
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
@@ -106,13 +92,12 @@
 
 ;; ; LATEX
 (require 'org)
-(setq org-latex-create-formula-image-program 'dvipng)
 (add-to-list 'org-latex-packages-alist '("" "amsmath" t))
 (add-to-list 'org-latex-packages-alist '("" "amssymb" t))
 (setq org-preview-latex-default-process 'dvipng)
 
 
-;; ; ORG ROAM
+;; ORG ROAM
 (setq org-roam-directory "~/RoamNotes")
 (use-package! websocket
     :after org-roam)
@@ -131,13 +116,13 @@
 
 (setq org-roam-database-connector 'sqlite3)
 
-;; ; GNUPLOT
+;; GNUPLOT
 (after! org
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((gnuplot . t))))
 
-;; ; COMPANY MODE
+;; COMPANY MODE
 (add-hook 'after-init-hook 'global-company-mode)
 ;; from modules/completion/company/config.el
 (use-package! company  ; `use-package!' is a thin wrapper around `use-package'
@@ -152,9 +137,35 @@
         company-dabbrev-ignore-case nil)
 [...])
 
-;; ; TABNINE
-;; (add-to-list 'company-backends #'company-tabnine)
-;; ;; Trigger completion immediately.
-;; (setq company-idle-delay 0)
-;; ;; Number the candidates (use M-1, M-2 etc to select completions).
-;; (setq company-show-quick-access t)
+;; LSP MODE
+(setq lsp-enable-symbol-highlighting t)
+(setq lsp-ui-doc-enable t)
+(setq lsp-lens-enable t)
+(setq lsp-headerline-breadcrumb-enable t)
+(setq lsp-modeline-code-actions-enable t)
+(setq lsp-diagnostics-provider :flycheck)
+(setq lsp-ui-sideline-enable t)
+(setq lsp-completion-show-detail t)
+(setq lsp-completion-show-kind t)
+
+
+;; JAVA
+(after! lsp-mode (require 'lsp-java))
+;; Configure LSP Java
+(after! lsp-java
+  (add-hook 'java-mode-hook #'lsp))
+
+(setq lsp-java-format-on-type-enabled nil
+      lsp-java-format-enabled nil)
+;; Set path to the language server executable
+(set-lsp-priority! 'eclipse-jdt .80)
+(setq lsp-java-server-install-dir "/bin/jdtls")
+(setq lsp-java-workspace-dir "~/Projects/java")
+
+(setq ansi-color-for-compilation-mode 'filter)
+(require 'ansi-color)
+(setq org-babel-java-command "ansi-color-for-comint-mode-on && javac")
+(defun my-enable-ansi-colors ()
+  (when (eq major-mode 'compilation-mode)
+    (ansi-color-apply-on-region compilation-filter-start (point-max))))
+(add-hook 'compilation-filter-hook 'my-enable-ansi-colors)
