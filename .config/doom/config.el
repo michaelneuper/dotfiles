@@ -9,7 +9,6 @@
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
 
-
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets. It is optional.
 (setq user-full-name "Michael Neuper"
@@ -47,7 +46,7 @@
 (setq doom-theme 'doom-one)
 
 ;; Doom banner
-(setq fancy-splash-image "~/.config/doom/doom-banners/splashes/emacs/emacs-e-logo.png")
+;; (setq fancy-splash-image "~/.config/doom/doom-banners/splashes/emacs/emacs-e-logo.png")
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -89,13 +88,72 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
+;;
+;; WINDOW MANAGEMENT
+(setq evil-split-window-below t
+      evil-vsplit-window-right t)
 
-;; ; LATEX
+; Enable pixel precision scrolling
+(when (version< "29.0.50" emacs-version)
+  (pixel-scroll-precision-mode))
+
+;; DASHBOARD
+(setq doom-fallback-buffer-name "*dashboard*")
+(use-package! dashboard
+  :ensure t
+  :init
+  (setq dashboard-items '((recents . 3)
+                          (projects . 3)
+                          (bookmarks . 5)))
+  (setq dashboard-show-shortcuts t)
+  (setq dashboard-center-content t)
+  (setq dashboard-startup-banner (concat doom-user-dir "doom-banners/splashes/emacs/M-x_butterfly.png"))
+  (setq dashboard-banner-logo-title "Welcome back to Emacs!")
+  (setq dashboard-display-icons-p t)
+  (setq dashboard-set-file-icons t)
+  (setq dashboard-set-heading-icons t)
+  (setq dashboard-set-navigator t)
+  ;; Format: "(icon title help action face prefix suffix)"
+  (setq dashboard-navigator-buttons
+  `(;; line 1
+    ((,(all-the-icons-octicon "mark-github" :height 1.0 :v-adjust 0.0)
+      "GitHub"
+      "Browse GitHub"
+        (lambda (&rest _) (browse-url "https://github.com/michaelneuper"))))
+        (;; line 2
+        (,(all-the-icons-faicon "calendar" :height 1.0 :v-adjust 0.0)
+        "Agenda"
+        "View org-agenda"
+        (lambda (&rest _) (org-agenda)) warning)
+        (,(all-the-icons-octicon "book" :height 1.0 :v-adjust 0.0)
+        "Docs"
+        "Show documentation"
+        (lambda (&rest _) (doom/help)) warning))))
+  :config
+  (dashboard-setup-startup-hook))
+
+;; TABS
+(after! centaur-tabs
+  :ensure t
+  :config
+   (setq centaur-tabs-style "bar"
+         centaur-tabs-set-bar 'left
+         centaur-tabs-height 32
+         centaur-tabs-set-icons t
+         centaur-tabs-gray-out-icons 'buffer)
+   (centaur-tabs-headline-match)
+   (centaur-tabs-mode t)
+   (centaur-tabs-group-by-projectile-project))
+
+;; LATEX
 (require 'org)
 (add-to-list 'org-latex-packages-alist '("" "amsmath" t))
 (add-to-list 'org-latex-packages-alist '("" "amssymb" t))
 (setq org-preview-latex-default-process 'dvipng)
 
+;; ORG MODE
+(setq org-use-property-inheritance t) ; fix weird issues with src blocks
+(setq org-startup-with-inline-images t) ; show inline images
 
 ;; ORG ROAM
 (setq org-roam-directory "~/RoamNotes")
@@ -114,7 +172,7 @@
           org-roam-ui-update-on-save t
           org-roam-ui-open-on-start t))
 
-(setq org-roam-database-connector 'sqlite3)
+;; (setq org-roam-database-connector 'sqlite3)
 
 ;; GNUPLOT
 (after! org
@@ -148,24 +206,23 @@
 (setq lsp-completion-show-detail t)
 (setq lsp-completion-show-kind t)
 
-
 ;; JAVA
-(after! lsp-mode (require 'lsp-java))
-;; Configure LSP Java
-(after! lsp-java
-  (add-hook 'java-mode-hook #'lsp))
-
-(setq lsp-java-format-on-type-enabled nil
-      lsp-java-format-enabled nil)
-;; Set path to the language server executable
-(set-lsp-priority! 'eclipse-jdt .80)
-(setq lsp-java-server-install-dir "/bin/jdtls")
-(setq lsp-java-workspace-dir "~/Projects/java")
-
-(setq ansi-color-for-compilation-mode 'filter)
-(require 'ansi-color)
-(setq org-babel-java-command "ansi-color-for-comint-mode-on && javac")
-(defun my-enable-ansi-colors ()
-  (when (eq major-mode 'compilation-mode)
-    (ansi-color-apply-on-region compilation-filter-start (point-max))))
-(add-hook 'compilation-filter-hook 'my-enable-ansi-colors)
+;; (after! lsp-mode (require 'lsp-java))
+;; ;; Configure LSP Java
+;; (after! lsp-java
+;;   (add-hook 'java-mode-hook #'lsp))
+;;
+;; (setq lsp-java-format-on-type-enabled nil
+;;       lsp-java-format-enabled nil)
+;; ;; Set path to the language server executable
+;; (set-lsp-priority! 'eclipse-jdt .80)
+;; (setq lsp-java-server-install-dir "/bin/jdtls")
+;; (setq lsp-java-workspace-dir "~/Projects/java")
+;;
+;; (setq ansi-color-for-compilation-mode 'filter)
+;; (require 'ansi-color)
+;; (setq org-babel-java-command "ansi-color-for-comint-mode-on && javac")
+;; (defun my-enable-ansi-colors ()
+;;   (when (eq major-mode 'compilation-mode)
+;;     (ansi-color-apply-on-region compilation-filter-start (point-max))))
+;; (add-hook 'compilation-filter-hook 'my-enable-ansi-colors)
