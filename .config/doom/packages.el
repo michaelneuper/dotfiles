@@ -49,8 +49,12 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;(unpin! t)
 
+(package! atom-one-dark-theme)
+(package! one-themes)
 (unpin! org-roam)
 (package! dashboard)
 (package! chess)
 (package! company-lsp)
 (package! org-roam-ui)
+(package! emacsql-sqlite3)
+;; (package! dashboard)
