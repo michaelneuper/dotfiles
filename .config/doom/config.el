@@ -6,57 +6,6 @@
 ;; |_|  |_|_| \_|
 ;;
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
-;; Place your private configuration here! Remember, you do not need to run 'doom
-;; sync' after modifying this file!
-
-;; Some functionality uses this to identify you, e.g. GPG configuration, email
-;; clients, file templates and snippets. It is optional.
-(setq user-full-name "Michael Neuper"
-      user-mail-address "michael@michaelneuper.com")
-
-;; Doom exposes five (optional) variables for controlling fonts in Doom:
-;;
-;; - `doom-font' -- the primary font to use
-;; - `doom-variable-pitch-font' -- a non-monospace font (where applicable)
-;; - `doom-big-font' -- used for `doom-big-font-mode'; use this for
-;;   presentations or streaming.
-;; - `doom-unicode-font' -- for unicode glyphs
-;; - `doom-serif-font' -- for the `fixed-pitch-serif' face
-;;
-;; See 'C-h v doom-font' for documentation and more examples of what they
-;; accept. For example:
-;;
-(setq doom-font (font-spec :family "Fira Code" :size 12.5)
-     doom-variable-pitch-font (font-spec :family "Noto Sans" :size 15))
-(after! doom-themes
-  (setq doom-themes-enable-bold t
-        doom-themes-enable-italic t))
-(custom-set-faces!
-  '(font-lock-comment-face :slant italic)
-  '(font-lock-keyword-face :slant italic))
-;;
-;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
-;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
-;; refresh your font settings. If Emacs still can't find your font, it likely
-;; wasn't installed correctly. Font issues are rarely Doom issues!
-
-;; There are two ways to load a theme. Both assume the theme is installed and
-;; available. You can either set `doom-theme' or manually load a theme with the
-;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-one)
-
-;; Doom banner
-;; (setq fancy-splash-image "~/.config/doom/doom-banners/splashes/emacs/emacs-e-logo.png")
-
-;; This determines the style of line numbers in effect. If set to `nil', line
-;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type 'relative)
-
-;; If you use `org' and don't want your org files in the default location below,
-;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/Documents/org")
-
-
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
 ;;
@@ -88,14 +37,61 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
-;;
+
+;; CONFIGURATION
+(setq doom-theme 'one-dark)
+
+(custom-set-faces!
+  '(doom-dashboard-banner :inherit default)
+  '(doom-dashboard-loaded :inherit default))
+
+(custom-set-faces!
+  '(dashboard-startup-banner :inherit default))
+
+(setq display-line-numbers-type 'relative)
+
+;; (setq auto-save-default t
+;;       make-backup-files t)
+
+(setq confirm-kill-emacs nil)
+
+(when (version< "29.0.50" emacs-version)
+  (pixel-scroll-precision-mode))
+
+;; CREDENTIALS
+(setq user-full-name "Michael Neuper"
+      user-mail-address "michael@michaelneuper.com")
+
+;;FONTS
+; SPC h v doom-font
+(setq doom-font (font-spec :family "Fira Code" :size 12.5)
+     doom-variable-pitch-font (font-spec :family "Noto Sans" :size 15))
+
+(after! doom-themes
+  (setq doom-themes-enable-bold t
+        doom-themes-enable-italic t))
+
+(custom-set-faces!
+  '(font-lock-comment-face :slant italic)
+  '(font-lock-keyword-face :slant italic))
+
+; disable certain ligatures
+(plist-put! +ligatures-extra-symbols
+  :and           nil
+  :or            nil
+  :not           nil
+  :true          nil
+  :false         nil
+  :int           nil
+  :float         nil
+  :str           nil
+  :bool          nil
+  :list          nil
+)
+
 ;; WINDOW MANAGEMENT
 (setq evil-split-window-below t
       evil-vsplit-window-right t)
-
-; Enable pixel precision scrolling
-(when (version< "29.0.50" emacs-version)
-  (pixel-scroll-precision-mode))
 
 ;; DASHBOARD
 (setq doom-fallback-buffer-name "*dashboard*")
@@ -117,8 +113,8 @@
   (setq dashboard-navigator-buttons
   `(;; line 1
     ((,(all-the-icons-octicon "mark-github" :height 1.0 :v-adjust 0.0)
-      "GitHub"
-      "Browse GitHub"
+        "GitHub"
+        "Browse GitHub"
         (lambda (&rest _) (browse-url "https://github.com/michaelneuper"))))
         (;; line 2
         (,(all-the-icons-faicon "calendar" :height 1.0 :v-adjust 0.0)
@@ -131,6 +127,16 @@
         (lambda (&rest _) (doom/help)) warning))))
   :config
   (dashboard-setup-startup-hook))
+
+;; MODELINE
+(nyan-mode)
+(setq nyan-animate-nyancat t
+      nyan-wavy-trail t)
+
+(setq doom-modeline-enable-word-count t
+      doom-modeline-persp-name t
+      doom-modeline-persp-icon t
+      doom-modeline-major-mode-icon t)
 
 ;; TABS
 (after! centaur-tabs
@@ -152,11 +158,19 @@
 (setq org-preview-latex-default-process 'dvipng)
 
 ;; ORG MODE
-(setq org-use-property-inheritance t) ; fix weird issues with src blocks
-(setq org-startup-with-inline-images t) ; show inline images
+(setq org-directory "~/Org"
+      org-use-property-inheritance t ; fix weird issue with src blocks
+      org-startup-with-inline-images t
+      org-startup-with-latex-preview t)
+
+(after! org
+  (setq org-agenda-files
+        '("~/Org/" "~/Documents/Org/agenda.org")))
 
 ;; ORG ROAM
-(setq org-roam-directory "~/RoamNotes")
+(setq org-roam-directory "~/RoamNotes"
+      org-attach-id-dir "attachments/")
+
 (use-package! websocket
     :after org-roam)
 
@@ -172,46 +186,47 @@
           org-roam-ui-update-on-save t
           org-roam-ui-open-on-start t))
 
-;; (setq org-roam-database-connector 'sqlite3)
+(setq org-roam-database-connector 'sqlite3)
 
-;; GNUPLOT
-(after! org
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((gnuplot . t))))
+;; ELISP
+(map! :leader
+      (:prefix ("e". "evaluate")
+       :desc "Evaluate elisp in buffer"  "b" #'eval-buffer
+       :desc "Evaluate defun"            "d" #'eval-defun
+       :desc "Evaluate elisp expression" "e" #'eval-expression
+       :desc "Evaluate last sexpression" "l" #'eval-last-sexp
+       :desc "Evaluate elisp in region"  "r" #'eval-region))
 
 ;; COMPANY MODE
 (add-hook 'after-init-hook 'global-company-mode)
 ;; from modules/completion/company/config.el
-(use-package! company  ; `use-package!' is a thin wrapper around `use-package'
-                        ; it is required that you use this in Doom's modules,
-                        ; but not required to be used in your private config.
-:commands (company-mode global-company-mode company-complete
+(use-package! company
+  :commands (company-mode global-company-mode company-complete
         company-complete-common company-manual-begin company-grab-line)
-:config
-(setq company-idle-delay nil
+  :config
+  (setq company-idle-delay nil
         company-tooltip-limit 10
         company-dabbrev-downcase nil
         company-dabbrev-ignore-case nil)
-[...])
+  [...])
 
 ;; LSP MODE
-(setq lsp-enable-symbol-highlighting t)
-(setq lsp-ui-doc-enable t)
-(setq lsp-lens-enable t)
-(setq lsp-headerline-breadcrumb-enable t)
-(setq lsp-modeline-code-actions-enable t)
-(setq lsp-diagnostics-provider :flycheck)
-(setq lsp-ui-sideline-enable t)
-(setq lsp-completion-show-detail t)
-(setq lsp-completion-show-kind t)
+(setq lsp-enable-symbol-highlighting t
+      lsp-ui-doc-enable t
+      lsp-lens-enable t
+      lsp-headerline-breadcrumb-enable t
+      lsp-modeline-code-actions-enable t
+      lsp-diagnostics-provider :flycheck
+      lsp-ui-sideline-enable t
+      lsp-completion-show-detail t
+      lsp-completion-show-kind t)
 
 ;; JAVA
 ;; (after! lsp-mode (require 'lsp-java))
 ;; ;; Configure LSP Java
 ;; (after! lsp-java
 ;;   (add-hook 'java-mode-hook #'lsp))
-;;
+
 ;; (setq lsp-java-format-on-type-enabled nil
 ;;       lsp-java-format-enabled nil)
 ;; ;; Set path to the language server executable
