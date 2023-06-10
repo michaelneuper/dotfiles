@@ -3,4 +3,3 @@
 # key: sysout
 # --
 System.out.println(${1:text});
-$0
