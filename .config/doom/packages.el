@@ -61,9 +61,17 @@
 ;; UI
 (package! dashboard)
 (package! nyan-mode)
+;; (package! good-scroll)
+(package! svg-lib)
+(package! svg-tag-mode)
 
 ;; CODE
 (package! company-lsp)
+
+;; UTILITY
+(package! suggest)
+(package! helm-system-packages)
+(package! smudge)
 
 (package! org-roam-ui)
 (package! emacsql-sqlite3)
