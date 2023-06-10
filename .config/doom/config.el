@@ -41,7 +41,8 @@
 ;; CONFIGURATION
 (setq doom-theme 'doom-one)
 
-(setq doom-localleader-key "SPC l")
+(setq doom-localleader-key "SPC l"
+      doom-localleader-alt-key "M-SPC l")
 
 (custom-set-faces!
   '(doom-dashboard-banner :inherit default)
@@ -73,9 +74,9 @@
       user-mail-address "michael@michaelneuper.com")
 
 ;;FONTS
-; SPC h v doom-font
+                                        ; SPC h v doom-font
 (setq doom-font (font-spec :family "Fira Code" :size 12.5)
-     doom-variable-pitch-font (font-spec :family "Noto Sans" :size 15))
+      doom-variable-pitch-font (font-spec :family "Noto Sans" :size 15))
 
 (after! doom-themes
   (setq doom-themes-enable-bold t
@@ -85,19 +86,19 @@
   '(font-lock-comment-face :slant italic)
   '(font-lock-keyword-face :slant italic))
 
-; disable certain ligatures
+                                        ; disable certain ligatures
 (plist-put! +ligatures-extra-symbols
-  :and           nil
-  :or            nil
-  :not           nil
-  :true          nil
-  :false         nil
-  :int           nil
-  :float         nil
-  :str           nil
-  :bool          nil
-  :list          nil
-)
+            :and           nil
+            :or            nil
+            :not           nil
+            :true          nil
+            :false         nil
+            :int           nil
+            :float         nil
+            :str           nil
+            :bool          nil
+            :list          nil
+            )
 
 ;; WINDOW MANAGEMENT
 (setq evil-split-window-below t
@@ -122,20 +123,20 @@
         dashboard-set-navigator t)
   ;; Format: "(icon title help action face prefix suffix)"
   (setq dashboard-navigator-buttons
-  `(;; line 1
-    ((,(all-the-icons-octicon "mark-github" :height 1.0 :v-adjust 0.0)
-        "GitHub"
-        "Browse GitHub"
-        (lambda (&rest _) (browse-url "https://github.com/michaelneuper"))))
-        (;; line 2
-        (,(all-the-icons-faicon "calendar" :height 1.0 :v-adjust 0.0)
-        "Agenda"
-        "View org-agenda"
-        (lambda (&rest _) (org-agenda)) warning)
-        (,(all-the-icons-octicon "book" :height 1.0 :v-adjust 0.0)
-        "Docs"
-        "Show documentation"
-        (lambda (&rest _) (doom/help)) warning))))
+        `(;; line 1
+          ((,(all-the-icons-octicon "mark-github" :height 1.0 :v-adjust 0.0)
+            "GitHub"
+            "Browse GitHub"
+            (lambda (&rest _) (browse-url "https://github.com/michaelneuper"))))
+          (;; line 2
+           (,(all-the-icons-faicon "calendar" :height 1.0 :v-adjust 0.0)
+            "Agenda"
+            "View org-agenda"
+            (lambda (&rest _) (org-agenda)) warning)
+           (,(all-the-icons-octicon "book" :height 1.0 :v-adjust 0.0)
+            "Docs"
+            "Show documentation"
+            (lambda (&rest _) (doom/help)) warning))))
   :config
   (dashboard-setup-startup-hook))
 
@@ -153,14 +154,14 @@
 (after! centaur-tabs
   :ensure t
   :config
-   (setq centaur-tabs-style "bar"
-         centaur-tabs-set-bar 'left
-         centaur-tabs-height 32
-         centaur-tabs-set-icons t
-         centaur-tabs-gray-out-icons 'buffer)
-   (centaur-tabs-headline-match)
-   (centaur-tabs-mode t)
-   (centaur-tabs-group-by-projectile-project))
+  (setq centaur-tabs-style "bar"
+        centaur-tabs-set-bar 'left
+        centaur-tabs-height 32
+        centaur-tabs-set-icons t
+        centaur-tabs-gray-out-icons 'buffer)
+  (centaur-tabs-headline-match)
+  (centaur-tabs-mode t)
+  (centaur-tabs-group-by-projectile-project))
 
 ;; LATEX
 (require 'org)
@@ -183,19 +184,19 @@
       org-attach-id-dir "attachments/")
 
 (use-package! websocket
-    :after org-roam)
+  :after org-roam)
 
 (use-package! org-roam-ui
-    :after org-roam ;; or :after org
-;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
-;;         a hookable mode anymore, you're advised to pick something yourself
-;;         if you don't care about startup time, use
-;;  :hook (after-init . org-roam-ui-mode)
-    :config
-    (setq org-roam-ui-sync-theme t
-          org-roam-ui-follow t
-          org-roam-ui-update-on-save t
-          org-roam-ui-open-on-start t))
+  :after org-roam ;; or :after org
+  ;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+  ;;         a hookable mode anymore, you're advised to pick something yourself
+  ;;         if you don't care about startup time, use
+  ;;  :hook (after-init . org-roam-ui-mode)
+  :config
+  (setq org-roam-ui-sync-theme t
+        org-roam-ui-follow t
+        org-roam-ui-update-on-save t
+        org-roam-ui-open-on-start t))
 
 (setq org-roam-database-connector 'sqlite3)
 
@@ -218,7 +219,7 @@
 ;; from modules/completion/company/config.el
 (use-package! company
   :commands (company-mode global-company-mode company-complete
-        company-complete-common company-manual-begin company-grab-line)
+                          company-complete-common company-manual-begin company-grab-line)
   :config
   (setq company-idle-delay 0.3
         company-tooltip-limit 10
@@ -268,6 +269,7 @@
 (require 'smudge)
 (load (concat doom-user-dir "spotify-credentials.el"))
 (setq smudge-status-location 'modeline)
+
 (map! :leader
       (:prefix ("m" . "music")
        :desc "Toggle shuffle"
@@ -323,7 +325,7 @@
 (defun svg-progress-percent (value)
   (svg-image (svg-lib-concat
               (svg-lib-progress-bar (/ (string-to-number value) 100.0)
-                                nil :margin 0 :stroke 2 :radius 3 :padding 2 :width 11)
+                                    nil :margin 0 :stroke 2 :radius 3 :padding 2 :width 11)
               (svg-lib-tag (concat value "%")
                            nil :stroke 0 :margin 0)) :ascent 'center))
 
@@ -331,11 +333,11 @@
   (let* ((seq (mapcar #'string-to-number (split-string value "/")))
          (count (float (car seq)))
          (total (float (cadr seq))))
-  (svg-image (svg-lib-concat
-              (svg-lib-progress-bar (/ count total) nil
-                                    :margin 0 :stroke 2 :radius 3 :padding 2 :width 11)
-              (svg-lib-tag value nil
-                           :stroke 0 :margin 0)) :ascent 'center)))
+    (svg-image (svg-lib-concat
+                (svg-lib-progress-bar (/ count total) nil
+                                      :margin 0 :stroke 2 :radius 3 :padding 2 :width 11)
+                (svg-lib-tag value nil
+                             :stroke 0 :margin 0)) :ascent 'center)))
 
 (setq svg-tag-tags
       `(
@@ -366,9 +368,9 @@
                                                         :beg 7 :end -1
                                                         :crop-right t))))
         ("\\[cite:@[A-Za-z]+:\\([0-9]+\\]\\)" . ((lambda (tag)
-                                                (svg-tag-make tag
-                                                              :end -1
-                                                              :crop-left t))))
+                                                   (svg-tag-make tag
+                                                                 :end -1
+                                                                 :crop-left t))))
 
 
         ;; Active date (with or without day name, with or without time)
@@ -383,15 +385,15 @@
             (svg-tag-make tag :end -1 :inverse t :crop-left t :margin 0))))
 
         ;; Inactive date  (with or without day name, with or without time)
-         (,(format "\\(\\[%s\\]\\)" date-re) .
-          ((lambda (tag)
-             (svg-tag-make tag :beg 1 :end -1 :margin 0 :face 'org-date))))
-         (,(format "\\(\\[%s \\)%s\\]" date-re day-time-re) .
-          ((lambda (tag)
-             (svg-tag-make tag :beg 1 :inverse nil :crop-right t :margin 0 :face 'org-date))))
-         (,(format "\\[%s \\(%s\\]\\)" date-re day-time-re) .
-          ((lambda (tag)
-             (svg-tag-make tag :end -1 :inverse t :crop-left t :margin 0 :face 'org-date))))))
+        (,(format "\\(\\[%s\\]\\)" date-re) .
+         ((lambda (tag)
+            (svg-tag-make tag :beg 1 :end -1 :margin 0 :face 'org-date))))
+        (,(format "\\(\\[%s \\)%s\\]" date-re day-time-re) .
+         ((lambda (tag)
+            (svg-tag-make tag :beg 1 :inverse nil :crop-right t :margin 0 :face 'org-date))))
+        (,(format "\\[%s \\(%s\\]\\)" date-re day-time-re) .
+         ((lambda (tag)
+            (svg-tag-make tag :end -1 :inverse t :crop-left t :margin 0 :face 'org-date))))))
 
 (svg-tag-mode t)
 
