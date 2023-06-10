@@ -39,7 +39,7 @@
 ;; they are implemented.
 
 ;; CONFIGURATION
-(setq doom-theme 'one-dark)
+(setq doom-theme 'doom-one)
 
 (custom-set-faces!
   '(doom-dashboard-banner :inherit default)
@@ -48,7 +48,10 @@
 (custom-set-faces!
   '(dashboard-startup-banner :inherit default))
 
-(setq display-line-numbers-type 'relative)
+(setq display-line-numbers-type 'visual)
+
+(setq display-fill-column-indicator-column 80)
+(add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
 
 ;; (setq auto-save-default t
 ;;       make-backup-files t)
@@ -57,6 +60,11 @@
 
 (when (version< "29.0.50" emacs-version)
   (pixel-scroll-precision-mode))
+;; (unless (eq system-type 'darwin)
+;;   (require 'good-scroll)
+;;   (good-scroll-mode 1))
+
+(setq-default spell-checking-enable-by-default nil)
 
 ;; CREDENTIALS
 (setq user-full-name "Michael Neuper"
@@ -100,15 +108,16 @@
   :init
   (setq dashboard-items '((recents . 3)
                           (projects . 3)
-                          (bookmarks . 5)))
-  (setq dashboard-show-shortcuts t)
-  (setq dashboard-center-content t)
-  (setq dashboard-startup-banner (concat doom-user-dir "doom-banners/splashes/emacs/M-x_butterfly.png"))
-  (setq dashboard-banner-logo-title "Welcome back to Emacs!")
-  (setq dashboard-display-icons-p t)
-  (setq dashboard-set-file-icons t)
-  (setq dashboard-set-heading-icons t)
-  (setq dashboard-set-navigator t)
+                          (bookmarks . 5))
+        dashboard-show-shortcuts t
+        dashboard-center-content t
+        dashboard-startup-banner (concat doom-user-dir
+                                         "doom-banners/splashes/emacs/M-x_butterfly.png")
+        dashboard-banner-logo-title "Welcome back to Emacs!"
+        dashboard-display-icons-p t
+        dashboard-set-file-icons t
+        dashboard-set-heading-icons t
+        dashboard-set-navigator t)
   ;; Format: "(icon title help action face prefix suffix)"
   (setq dashboard-navigator-buttons
   `(;; line 1
@@ -190,12 +199,17 @@
 
 ;; ELISP
 (map! :leader
-      (:prefix ("e". "evaluate")
-       :desc "Evaluate elisp in buffer"  "b" #'eval-buffer
-       :desc "Evaluate defun"            "d" #'eval-defun
-       :desc "Evaluate elisp expression" "e" #'eval-expression
-       :desc "Evaluate last sexpression" "l" #'eval-last-sexp
-       :desc "Evaluate elisp in region"  "r" #'eval-region))
+      (:prefix ("e" . "evaluate")
+       :desc "Evaluate elisp in buffer"
+       "b" #'eval-buffer
+       :desc "Evaluate defun"
+       "d" #'eval-defun
+       :desc "Evaluate elisp expression"
+       "e" #'eval-expression
+       :desc "Evaluate last sexpression"
+       "l" #'eval-last-sexp
+       :desc "Evaluate elisp in region"
+       "r" #'eval-region))
 
 ;; COMPANY MODE
 (add-hook 'after-init-hook 'global-company-mode)
@@ -204,7 +218,7 @@
   :commands (company-mode global-company-mode company-complete
         company-complete-common company-manual-begin company-grab-line)
   :config
-  (setq company-idle-delay nil
+  (setq company-idle-delay 0.3
         company-tooltip-limit 10
         company-dabbrev-downcase nil
         company-dabbrev-ignore-case nil)
@@ -222,18 +236,24 @@
       lsp-completion-show-kind t)
 
 ;; JAVA
-;; (after! lsp-mode (require 'lsp-java))
-;; ;; Configure LSP Java
-;; (after! lsp-java
-;;   (add-hook 'java-mode-hook #'lsp))
+(after! lsp-mode (require 'lsp-java))
 
-;; (setq lsp-java-format-on-type-enabled nil
-;;       lsp-java-format-enabled nil)
-;; ;; Set path to the language server executable
+;; Configure LSP Java
+(after! lsp-java
+  (add-hook 'java-mode-hook #'lsp)
+  (add-hook 'java-mode-hook
+            (lambda ()
+              (setq c-basic-offset 4
+                    tab-width 4
+                    indent-tabs-mode nil))))
+
+(setq lsp-java-format-on-type-enabled nil
+      lsp-java-format-enabled nil)
+;; Set path to the language server executable
 ;; (set-lsp-priority! 'eclipse-jdt .80)
 ;; (setq lsp-java-server-install-dir "/bin/jdtls")
 ;; (setq lsp-java-workspace-dir "~/Projects/java")
-;;
+
 ;; (setq ansi-color-for-compilation-mode 'filter)
 ;; (require 'ansi-color)
 ;; (setq org-babel-java-command "ansi-color-for-comint-mode-on && javac")
@@ -241,3 +261,148 @@
 ;;   (when (eq major-mode 'compilation-mode)
 ;;     (ansi-color-apply-on-region compilation-filter-start (point-max))))
 ;; (add-hook 'compilation-filter-hook 'my-enable-ansi-colors)
+
+;; SMUDGE
+(require 'smudge)
+(load (concat doom-user-dir "spotify-credentials.el"))
+(map! :leader
+      (:prefix ("j" . "spotify")
+       :desc "Toggle shuffle"
+       "s" #'smudge-controller-toggle-shuffle
+       :desc "Toggle repeat"
+       "r" #'smudge-controller-toggle-repeat
+       :desc "Play/pause"
+       "SPC" #'smudge-controller-toggle-play
+       :desc "Next track"
+       "f" #'smudge-controller-next-track
+       :desc "Previous track"
+       "b" #'smudge-controller-previous-track
+       :desc "My playlists"
+       "m" #'smudge-my-playlists
+       :desc "Select playback device"
+       "d" #'smudge-select-device))
+
+(map! :leader
+      (:prefix ("j p" . "playlists")
+       :desc "Featured playlists"
+       "f" #'smudge-featured-playlists
+       :desc "Search playlists"
+       "s" #'smudge-playlist-search
+       :desc "Show user's playlists"
+       "u" #'smudge-user-playlists
+       :desc "Create new playlist"
+       "c" #'smudge-create-playlist))
+
+(map! :leader
+      (:prefix ("j t" . "tracks")
+       :desc "List recently played tracks"
+       "r" #'smudge-recently-played
+       :desc "Search for trakcs"
+       "s" #'smudge-track-search))
+
+(map! :leader
+      (:prefix ("j v" . "volume")
+       :desc "Increase volume"
+       "u" #'smudge-controller-volume-up
+       :desc "Decrease volume"
+       "d" #'smudge-controller-volume-down
+       :desc "Toggle mute"
+       "m" #'smudge-controller-voume-mute-unmute))
+
+;; SVG TAGS
+(require 'svg-tag-mode)
+
+(defconst date-re "[0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}")
+(defconst time-re "[0-9]\\{2\\}:[0-9]\\{2\\}")
+(defconst day-re "[A-Za-z]\\{3\\}")
+(defconst day-time-re (format "\\(%s\\)? ?\\(%s\\)?" day-re time-re))
+
+(defun svg-progress-percent (value)
+  (svg-image (svg-lib-concat
+              (svg-lib-progress-bar (/ (string-to-number value) 100.0)
+                                nil :margin 0 :stroke 2 :radius 3 :padding 2 :width 11)
+              (svg-lib-tag (concat value "%")
+                           nil :stroke 0 :margin 0)) :ascent 'center))
+
+(defun svg-progress-count (value)
+  (let* ((seq (mapcar #'string-to-number (split-string value "/")))
+         (count (float (car seq)))
+         (total (float (cadr seq))))
+  (svg-image (svg-lib-concat
+              (svg-lib-progress-bar (/ count total) nil
+                                    :margin 0 :stroke 2 :radius 3 :padding 2 :width 11)
+              (svg-lib-tag value nil
+                           :stroke 0 :margin 0)) :ascent 'center)))
+
+(setq svg-tag-tags
+      `(
+        ;; Org tags
+        (":\\([A-Za-z0-9]+\\)" . ((lambda (tag) (svg-tag-make tag))))
+        (":\\([A-Za-z0-9]+[ \-]\\)" . ((lambda (tag) tag)))
+
+        ;; Task priority
+        ("\\[#[A-Z]\\]" . ( (lambda (tag)
+                              (svg-tag-make tag :face 'org-priority
+                                            :beg 2 :end -1 :margin 0))))
+
+        ;; Progress
+        ("\\(\\[[0-9]\\{1,3\\}%\\]\\)" . ((lambda (tag)
+                                            (svg-progress-percent (substring tag 1 -2)))))
+        ("\\(\\[[0-9]+/[0-9]+\\]\\)" . ((lambda (tag)
+                                          (svg-progress-count (substring tag 1 -1)))))
+
+        ;; TODO / DONE
+        ("TODO" . ((lambda (tag) (svg-tag-make "TODO" :face 'org-todo :inverse t :margin 0))))
+        ("DONE" . ((lambda (tag) (svg-tag-make "DONE" :face 'org-done :margin 0))))
+
+
+        ;; Citation of the form [cite:@Knuth:1984]
+        ("\\(\\[cite:@[A-Za-z]+:\\)" . ((lambda (tag)
+                                          (svg-tag-make tag
+                                                        :inverse t
+                                                        :beg 7 :end -1
+                                                        :crop-right t))))
+        ("\\[cite:@[A-Za-z]+:\\([0-9]+\\]\\)" . ((lambda (tag)
+                                                (svg-tag-make tag
+                                                              :end -1
+                                                              :crop-left t))))
+
+
+        ;; Active date (with or without day name, with or without time)
+        (,(format "\\(<%s>\\)" date-re) .
+         ((lambda (tag)
+            (svg-tag-make tag :beg 1 :end -1 :margin 0))))
+        (,(format "\\(<%s \\)%s>" date-re day-time-re) .
+         ((lambda (tag)
+            (svg-tag-make tag :beg 1 :inverse nil :crop-right t :margin 0))))
+        (,(format "<%s \\(%s>\\)" date-re day-time-re) .
+         ((lambda (tag)
+            (svg-tag-make tag :end -1 :inverse t :crop-left t :margin 0))))
+
+        ;; Inactive date  (with or without day name, with or without time)
+         (,(format "\\(\\[%s\\]\\)" date-re) .
+          ((lambda (tag)
+             (svg-tag-make tag :beg 1 :end -1 :margin 0 :face 'org-date))))
+         (,(format "\\(\\[%s \\)%s\\]" date-re day-time-re) .
+          ((lambda (tag)
+             (svg-tag-make tag :beg 1 :inverse nil :crop-right t :margin 0 :face 'org-date))))
+         (,(format "\\[%s \\(%s\\]\\)" date-re day-time-re) .
+          ((lambda (tag)
+             (svg-tag-make tag :end -1 :inverse t :crop-left t :margin 0 :face 'org-date))))))
+
+(svg-tag-mode t)
+
+;; To do:         TODO DONE
+;; Tags:          :TAG1:TAG2:TAG3:
+;; Priorities:    [#A] [#B] [#C]
+;; Progress:      [1/3]
+;;                [42%]
+;; Active date:   <2021-12-24>
+;;                <2021-12-24 Fri>
+;;                <2021-12-24 14:00>
+;;                <2021-12-24 Fri 14:00>
+;; Inactive date: [2021-12-24]
+;;                [2021-12-24 Fri]
+;;                [2021-12-24 14:00]
+;;                [2021-12-24 Fri 14:00]
+;; Citation:      [cite:@Knuth:1984]
