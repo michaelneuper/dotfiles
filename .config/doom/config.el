@@ -41,6 +41,8 @@
 ;; CONFIGURATION
 (setq doom-theme 'doom-one)
 
+(setq doom-localleader-key "SPC l")
+
 (custom-set-faces!
   '(doom-dashboard-banner :inherit default)
   '(doom-dashboard-loaded :inherit default))
@@ -262,11 +264,12 @@
 ;;     (ansi-color-apply-on-region compilation-filter-start (point-max))))
 ;; (add-hook 'compilation-filter-hook 'my-enable-ansi-colors)
 
-;; SMUDGE
+;; SPOTIFY
 (require 'smudge)
 (load (concat doom-user-dir "spotify-credentials.el"))
+(setq smudge-status-location 'modeline)
 (map! :leader
-      (:prefix ("j" . "spotify")
+      (:prefix ("m" . "music")
        :desc "Toggle shuffle"
        "s" #'smudge-controller-toggle-shuffle
        :desc "Toggle repeat"
@@ -283,7 +286,7 @@
        "d" #'smudge-select-device))
 
 (map! :leader
-      (:prefix ("j p" . "playlists")
+      (:prefix ("m p" . "playlists")
        :desc "Featured playlists"
        "f" #'smudge-featured-playlists
        :desc "Search playlists"
@@ -294,14 +297,14 @@
        "c" #'smudge-create-playlist))
 
 (map! :leader
-      (:prefix ("j t" . "tracks")
+      (:prefix ("m t" . "tracks")
        :desc "List recently played tracks"
        "r" #'smudge-recently-played
        :desc "Search for trakcs"
        "s" #'smudge-track-search))
 
 (map! :leader
-      (:prefix ("j v" . "volume")
+      (:prefix ("m v" . "volume")
        :desc "Increase volume"
        "u" #'smudge-controller-volume-up
        :desc "Decrease volume"
