@@ -104,6 +104,22 @@
 (setq evil-split-window-below t
       evil-vsplit-window-right t)
 
+;; Ask what buffer to switch to when doing a split
+(defadvice! prompt-for-buffers (&rest _)
+  :after '(evil-window-split evil-window-vsplit)
+  (consult-buffer))
+
+;; EVIL MODE
+(setq undo-limit 80000000 ; Raise undo limit to 80mb
+      evil-want-fine-undo t) ; Grandular changes when in insert mode
+
+;; INFO-COLORS
+(use-package! info-colors
+  :commands (info-colors-fontify-node))
+
+(add-hook 'Info-selection-hook
+          'info-colors-fontify-node)
+
 ;; DASHBOARD
 (setq doom-fallback-buffer-name "*dashboard*")
 (use-package! dashboard
@@ -178,6 +194,17 @@
 (after! org
   (setq org-agenda-files
         '("~/Org/" "~/Documents/Org/agenda.org")))
+
+;; Show ansi-color codes in org results
+(defun my/babel-ansi ()
+  (when-let ((beg (org-babel-where-is-src-block-result nil nil)))
+    (save-excursion
+      (goto-char beg)
+      (when (looking-at org-babel-result-regexp)
+        (let ((end (org-babel-result-end))
+              (ansi-color-context-region nil))
+          (ansi-color-apply-on-region beg end))))))
+(add-hook 'org-babel-after-execute-hook 'my/babel-ansi)
 
 ;; ORG ROAM
 (setq org-roam-directory "~/RoamNotes"
@@ -257,17 +284,16 @@
 ;; (setq lsp-java-server-install-dir "/bin/jdtls")
 ;; (setq lsp-java-workspace-dir "~/Projects/java")
 
-;; (setq ansi-color-for-compilation-mode 'filter)
-;; (require 'ansi-color)
-;; (setq org-babel-java-command "ansi-color-for-comint-mode-on && javac")
-;; (defun my-enable-ansi-colors ()
-;;   (when (eq major-mode 'compilation-mode)
-;;     (ansi-color-apply-on-region compilation-filter-start (point-max))))
-;; (add-hook 'compilation-filter-hook 'my-enable-ansi-colors)
+;; Display ansi colour codes
+(after! text-mode
+  (add-hook! 'text-mode-hook
+    (unless (derived-mode-p 'org-mode)
+      (with-silent-modifications
+        (ansi-color-apply-on-region (point-min) (point-max) t)))))
 
 ;; SPOTIFY
 (require 'smudge)
-(load (concat doom-user-dir "spotify-credentials.el"))
+(load! "spotify-credentials.el")
 (setq smudge-status-location 'modeline)
 
 (map! :leader
@@ -341,16 +367,16 @@
 
 (setq svg-tag-tags
       `(
-        ;; Org tags
+        ;; Org tags :TAG1:TAG2:TAG3:
         (":\\([A-Za-z0-9]+\\)" . ((lambda (tag) (svg-tag-make tag))))
         (":\\([A-Za-z0-9]+[ \-]\\)" . ((lambda (tag) tag)))
 
-        ;; Task priority
+        ;; Task priority [#A] [#B] [#C]
         ("\\[#[A-Z]\\]" . ( (lambda (tag)
                               (svg-tag-make tag :face 'org-priority
                                             :beg 2 :end -1 :margin 0))))
 
-        ;; Progress
+        ;; Progress [1/3]
         ("\\(\\[[0-9]\\{1,3\\}%\\]\\)" . ((lambda (tag)
                                             (svg-progress-percent (substring tag 1 -2)))))
         ("\\(\\[[0-9]+/[0-9]+\\]\\)" . ((lambda (tag)
@@ -359,7 +385,6 @@
         ;; TODO / DONE
         ("TODO" . ((lambda (tag) (svg-tag-make "TODO" :face 'org-todo :inverse t :margin 0))))
         ("DONE" . ((lambda (tag) (svg-tag-make "DONE" :face 'org-done :margin 0))))
-
 
         ;; Citation of the form [cite:@Knuth:1984]
         ("\\(\\[cite:@[A-Za-z]+:\\)" . ((lambda (tag)
@@ -373,7 +398,7 @@
                                                                  :crop-left t))))
 
 
-        ;; Active date (with or without day name, with or without time)
+        ;; Active date (with or without day name, with or without time) <2021-12-24 Fri 14:00>
         (,(format "\\(<%s>\\)" date-re) .
          ((lambda (tag)
             (svg-tag-make tag :beg 1 :end -1 :margin 0))))
@@ -384,7 +409,7 @@
          ((lambda (tag)
             (svg-tag-make tag :end -1 :inverse t :crop-left t :margin 0))))
 
-        ;; Inactive date  (with or without day name, with or without time)
+        ;; Inactive date  (with or without day name, with or without time) [2021-12-24 Fri 14:00]
         (,(format "\\(\\[%s\\]\\)" date-re) .
          ((lambda (tag)
             (svg-tag-make tag :beg 1 :end -1 :margin 0 :face 'org-date))))
@@ -395,19 +420,4 @@
          ((lambda (tag)
             (svg-tag-make tag :end -1 :inverse t :crop-left t :margin 0 :face 'org-date))))))
 
-(svg-tag-mode t)
-
-;; To do:         TODO DONE
-;; Tags:          :TAG1:TAG2:TAG3:
-;; Priorities:    [#A] [#B] [#C]
-;; Progress:      [1/3]
-;;                [42%]
-;; Active date:   <2021-12-24>
-;;                <2021-12-24 Fri>
-;;                <2021-12-24 14:00>
-;;                <2021-12-24 Fri 14:00>
-;; Inactive date: [2021-12-24]
-;;                [2021-12-24 Fri]
-;;                [2021-12-24 14:00]
-;;                [2021-12-24 Fri 14:00]
-;; Citation:      [cite:@Knuth:1984]
+(add-hook! 'org-mode-hook '(svg-tag-mode t))
