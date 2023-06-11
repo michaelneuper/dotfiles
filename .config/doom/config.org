@@ -1,43 +1,39 @@
 #+title: Doom Emacs Config
 #+author: Michael Neuper
- __  __ _   _
-|  \/  | \ | |
-| \  / |  \| |  Michael Neuper
-| |\/| | . ` |  https://michaelneuper.com
-| |  | | |\  |  https://github.com/michaelneuper
-|_|  |_|_| \_|
 
 * Doom
-Whenever you reconfigure a package, make sure to wrap your config in an
-`after!' block, otherwise Doom's defaults may override your settings. E.g.
+#+begin_src emacs-lisp
+;; Whenever you reconfigure a package, make sure to wrap your config in an
+;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
 
-  (after! PACKAGE
-    (setq x y))
+;;   (after! PACKAGE
+;;     (setq x y))
 
-The exceptions to this rule:
-  - Setting file/directory variables (like `org-directory')
-  - Setting variables which explicitly tell you to set them before their
-    package is loaded (see 'C-h v VARIABLE' to look up their documentation).
-  - Setting doom variables (which start with 'doom-' or '+').
+;; The exceptions to this rule:
+;;     - Setting file/directory variables (like `org-directory')
+;;     - Setting variables which explicitly tell you to set them before their
+;;     package is loaded (see 'C-h v VARIABLE' to look up their documentation).
+;;     - Setting doom variables (which start with 'doom-' or '+').
 
-Here are some additional functions/macros that will help you configure Doom.
+;; Here are some additional functions/macros that will help you configure Doom.
 
-- `load!' for loading external *.el files relative to this one
-- `use-package!' for configuring packages
-- `after!' for running code after a package has loaded
-- `add-load-path!' for adding directories to the `load-path', relative to
-  this file. Emacs searches the `load-path' when you load packages with
-  `require' or `use-package'.
-- `map!' for binding new keys
+;;     - `load!' for loading external *.el files relative to this one
+;;     - `use-package!' for configuring packages
+;;     - `after!' for running code after a package has loaded
+;;     - `add-load-path!' for adding directories to the `load-path', relative to
+;;     this file. Emacs searches the `load-path' when you load packages with
+;;     `require' or `use-package'.
+;;     - `map!' for binding new keys
 
-To get information about any of these functions/macros, move the cursor over
-the highlighted symbol at press 'K' (non-evil users must press 'C-c c k').
-This will open documentation for it, including demos of how they are used.
-Alternatively, use `C-h o' to look up a symbol (functions, variables, faces,
-etc).
+;; To get information about any of these functions/macros, move the cursor over
+;; the highlighted symbol at press 'K' (non-evil users must press 'C-c c k').
+;; This will open documentation for it, including demos of how they are used.
+;; Alternatively, use `C-h o' to look up a symbol (functions, variables, faces,
+;; etc).
 
-You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
-they are implemented.
+;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
+;; they are implemented.
+#+end_src
 
 * Configuration
 ** Theme
@@ -379,6 +375,18 @@ Enable SVG tags in org mode.
 (add-to-list 'org-latex-packages-alist '("" "amsmath" t))
 (add-to-list 'org-latex-packages-alist '("" "amssymb" t))
 (setq org-preview-latex-default-process 'dvipng)
+#+end_src
+
+CDLaTeX keybindings.
+
+#+begin_src emacs-lisp
+(map! :after latex
+      :map latex-mode-map
+      :localleader
+      :desc "Insert math symbol"
+      "i" #'cdlatex-math-symbol
+      :desc "Begin environment"
+      "e" #'cdlatex-environment)
 #+end_src
 
 *** Emacs Lisp
