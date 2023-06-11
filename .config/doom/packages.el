@@ -64,6 +64,7 @@
 ;; (package! good-scroll)
 (package! svg-lib)
 (package! svg-tag-mode)
+(package! info-colors)
 
 ;; CODE
 (package! company-lsp)
