@@ -5,11 +5,11 @@ set -e fish_user_paths
 set -U fish_user_paths $HOME/.local/bin $HOME/Applications $fish_user_paths
 
 ### EXPORT ###
-set fish_greeting                                 # Supresses fish's intro message
-set TERM "xterm-256color"                         # Sets the terminal type
-set EDITOR "nvim"                                 # $EDITOR use neovim in terminal
-set VISUAL "notepadqq"                            # $VISUAL use notepadqq in GUI mode
-set PATH "$HOME/.config/emacs/bin:$PATH"               # Add doom emacs to the path
+set fish_greeting # Supresses fish's intro message
+set TERM xterm-256color # Sets the terminal type
+set EDITOR nvim # $EDITOR use neovim in terminal
+set VISUAL notepadqq # $VISUAL use notepadqq in GUI mode
+set PATH "$HOME/.config/emacs/bin:$PATH" # Add doom emacs to the path
 
 ### SET MANPAGER
 ### Uncomment only one of these!
@@ -25,8 +25,8 @@ set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
 
 ### SET EITHER DEFAULT EMACS MODE OR VI MODE ###
 function fish_user_key_bindings
-  # fish_default_key_bindings
-  fish_vi_key_bindings
+    # fish_default_key_bindings
+    fish_vi_key_bindings
 end
 ### END OF VI MODE ###
 
@@ -47,30 +47,31 @@ end
 
 # Functions needed for !! and !$
 function __history_previous_command
-  switch (commandline -t)
-  case "!"
-    commandline -t $history[1]; commandline -f repaint
-  case "*"
-    commandline -i !
-  end
+    switch (commandline -t)
+        case "!"
+            commandline -t $history[1]
+            commandline -f repaint
+        case "*"
+            commandline -i !
+    end
 end
 
 function __history_previous_command_arguments
-  switch (commandline -t)
-  case "!"
-    commandline -t ""
-    commandline -f history-token-search-backward
-  case "*"
-    commandline -i '$'
-  end
+    switch (commandline -t)
+        case "!"
+            commandline -t ""
+            commandline -f history-token-search-backward
+        case "*"
+            commandline -i '$'
+    end
 end
 # The bindings for !! and !$
-if [ $fish_key_bindings = "fish_vi_key_bindings" ];
-  bind -Minsert ! __history_previous_command
-  bind -Minsert '$' __history_previous_command_arguments
+if [ $fish_key_bindings = fish_vi_key_bindings ]
+    bind -Minsert ! __history_previous_command
+    bind -Minsert '$' __history_previous_command_arguments
 else
-  bind ! __history_previous_command
-  bind '$' __history_previous_command_arguments
+    bind ! __history_previous_command
+    bind '$' __history_previous_command_arguments
 end
 
 # Function for creating a backup file
@@ -86,8 +87,8 @@ end
 function copy
     set count (count $argv | tr -d \n)
     if test "$count" = 2; and test -d "$argv[1]"
-	set from (echo $argv[1] | trim-right /)
-	set to (echo $argv[2])
+        set from (echo $argv[1] | trim-right /)
+        set to (echo $argv[2])
         command cp -r $from $to
     else
         command cp $argv
@@ -152,8 +153,8 @@ alias em='emacsclient -nw'
 
 # Change "ls" to "exa"
 alias ls='exa -l --color=always --group-directories-first --no-user --no-time --icons' # my preferred listing
-alias la='exa -al --color=always --group-directories-first --no-user --no-time --icons'  # all files and dirs
-alias ll='exa -l --color=always --group-directories-first --header --icons'  # long format
+alias la='exa -al --color=always --group-directories-first --no-user --no-time --icons' # all files and dirs
+alias ll='exa -l --color=always --group-directories-first --header --icons' # long format
 alias lt='exa -aT --color=always --group-directories-first' # tree listing
 alias l.='exa -a | egrep "^\."'
 
@@ -161,12 +162,12 @@ alias l.='exa -a | egrep "^\."'
 alias cat='bat'
 
 # Pacman and Paru
-alias update='sudo pacman -Syu'                  # update only standard pkgs
-alias pacsyyu='sudo pacman -Syyu'                # Refresh pkglist & update standard pkgs
-alias parsua='paru -Sua --noconfirm'             # update only AUR pkgs (paru)
-alias parsyu='paru -Syu --noconfirm'             # update standard pkgs and AUR pkgs (paru)
-alias unlock='sudo rm /var/lib/pacman/db.lck'    # remove pacman lock
-alias cleanup='sudo pacman -Rns (pacman -Qtdq)'  # remove orphaned packages
+alias update='sudo pacman -Syu' # update only standard pkgs
+alias pacsyyu='sudo pacman -Syyu' # Refresh pkglist & update standard pkgs
+alias parsua='paru -Sua --noconfirm' # update only AUR pkgs (paru)
+alias parsyu='paru -Syu --noconfirm' # update standard pkgs and AUR pkgs (paru)
+alias unlock='sudo rm /var/lib/pacman/db.lck' # remove pacman lock
+alias cleanup='sudo pacman -Rns (pacman -Qtdq)' # remove orphaned packages
 
 # get fastest mirrors
 alias mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist"
@@ -175,7 +176,7 @@ alias mirrors="sudo reflector --latest 50 --number 20 --sort score --save /etc/p
 alias mirrora="sudo reflector --latest 50 --number 20 --sort age --save /etc/pacman.d/mirrorlist"
 
 # Colorize grep output (good for log files)
-alias grep='rg --color=auto'                # change grep to ripgrep
+alias grep='rg --color=auto' # change grep to ripgrep
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 
@@ -185,10 +186,10 @@ alias fgrep='fgrep --color=auto'
 # alias rm='rm -i'
 
 # adding flags
-alias df='df -h'                          # human-readable sizes
-alias free='free -m'                      # show sizes in MB
+alias df='df -h' # human-readable sizes
+alias free='free -m' # show sizes in MB
 # alias lynx='lynx -cfg=~/.lynx/lynx.cfg -lss=~/.lynx/lynx.lss -vikeys'
-alias paru='paru --bottomup'                     # list pkgs from the bottum up
+alias paru='paru --bottomup' # list pkgs from the bottum up
 
 # Merge Xresources
 alias merge='xrdb -merge ~/.Xresources'
@@ -224,8 +225,8 @@ alias ytv-best="youtube-dl -f bestvideo+bestaudio "
 alias rr='curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/master/roll.sh | bash'
 
 # useful aliases
-alias np='notepadqq'                               # notepadqq
-alias myip="curl http://ipecho.net/plain; echo"    # get ip address
+alias np='notepadqq' # notepadqq
+alias myip="curl http://ipecho.net/plain; echo" # get ip address
 alias wa="tungsten"
 alias pamcan="pacman"
 
@@ -237,7 +238,9 @@ alias toafr="trans -j -show-original no -show-languages no -show-prompt-message 
 
 ### RANDOM COLOR SCRIPT ###
 # Install it from the AUR: shell-color-scripts
-colorscript -e panes
+if status --is-interactive
+    colorscript -e panes
+end
 
 ### SETTING THE STARSHIP PROMPT ###
 starship init fish | source
