@@ -1,38 +1,131 @@
-(setq doom-theme 'doom-one)
+#+title: Doom Emacs Config
+#+author: Michael Neuper
+ __  __ _   _
+|  \/  | \ | |
+| \  / |  \| |  Michael Neuper
+| |\/| | . ` |  https://michaelneuper.com
+| |  | | |\  |  https://github.com/michaelneuper
+|_|  |_|_| \_|
 
+* Doom
+Whenever you reconfigure a package, make sure to wrap your config in an
+`after!' block, otherwise Doom's defaults may override your settings. E.g.
+
+  (after! PACKAGE
+    (setq x y))
+
+The exceptions to this rule:
+  - Setting file/directory variables (like `org-directory')
+  - Setting variables which explicitly tell you to set them before their
+    package is loaded (see 'C-h v VARIABLE' to look up their documentation).
+  - Setting doom variables (which start with 'doom-' or '+').
+
+Here are some additional functions/macros that will help you configure Doom.
+
+- `load!' for loading external *.el files relative to this one
+- `use-package!' for configuring packages
+- `after!' for running code after a package has loaded
+- `add-load-path!' for adding directories to the `load-path', relative to
+  this file. Emacs searches the `load-path' when you load packages with
+  `require' or `use-package'.
+- `map!' for binding new keys
+
+To get information about any of these functions/macros, move the cursor over
+the highlighted symbol at press 'K' (non-evil users must press 'C-c c k').
+This will open documentation for it, including demos of how they are used.
+Alternatively, use `C-h o' to look up a symbol (functions, variables, faces,
+etc).
+
+You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
+they are implemented.
+
+* Configuration
+** Theme
+Use doom-one theme.
+
+#+begin_src emacs-lisp
+(setq doom-theme 'doom-one)
+#+end_src
+
+** Local Leader Key
+Remap <localleader> from m to l to avoid conflict with spotify bindings.
+
+#+begin_src emacs-lisp
 (setq doom-localleader-key "SPC l"
       doom-localleader-alt-key "M-SPC l")
+#+end_src
 
+** Faces
+#+begin_src emacs-lisp
 (custom-set-faces!
   '(doom-dashboard-banner :inherit default)
   '(doom-dashboard-loaded :inherit default))
 
 (custom-set-faces!
   '(dashboard-startup-banner :inherit default))
+#+end_src
 
+** Line Numbers
+Use visual line numbers to avoid wrong line numbers in folded content.
+
+#+begin_src emacs-lisp
 (setq display-line-numbers-type 'visual)
+#+end_src
 
+** Column Indicator
+Display column indicator after 80 characters in programming mode.
+
+#+begin_src emacs-lisp
 (setq display-fill-column-indicator-column 80)
 (add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
+#+end_src
 
+** Auto-Save and Backup
+#+begin_src emacs-lisp
 ;; (setq auto-save-default t
 ;;       make-backup-files t)
+#+end_src
 
+** Confirm Kill Emacs
+Kill emacs without confirming.
+
+#+begin_src emacs-lisp
 (setq confirm-kill-emacs nil)
+#+end_src
 
+** Pixel Scroll
+Enable pixel precision scrolling.
+
+#+begin_src emacs-lisp
 (when (version< "29.0.50" emacs-version)
   (pixel-scroll-precision-mode))
+#+end_src
 
+Enable smooth scrolling
+
+#+begin_src emacs-lisp
 ;; (unless (eq system-type 'darwin)
 ;;   (require 'good-scroll)
 ;;   (good-scroll-mode 1))
+#+end_src
 
+** Credentials
+#+begin_src emacs-lisp
 (setq user-full-name "Michael Neuper"
       user-mail-address "michael@michaelneuper.com")
+#+end_src
 
+** Fonts
+Set doom fonts.
+
+#+begin_src emacs-lisp
 (setq doom-font (font-spec :family "Fira Code" :size 12.5)
       doom-variable-pitch-font (font-spec :family "Noto Sans" :size 15))
+#+end_src
 
+Italicize comments.
+
+#+begin_src emacs-lisp
 (after! doom-themes
   (setq doom-themes-enable-bold t
         doom-themes-enable-italic t))
@@ -40,7 +133,11 @@
 (custom-set-faces!
   '(font-lock-comment-face :slant italic)
   '(font-lock-keyword-face :slant italic))
+#+end_src
 
+Disable certain ligatures.
+
+#+begin_src emacs-lisp
 (plist-put! +ligatures-extra-symbols
             :and           nil
             :or            nil
@@ -53,16 +150,37 @@
             :bool          nil
             :list          nil
             )
+#+end_src
 
+* Window Management
+** Split Window Behaviour
+Window split behaviour.
+
+#+begin_src emacs-lisp
 (setq evil-split-window-below t
       evil-vsplit-window-right t)
+#+end_src
 
+** Prompt for Buffers
+Ask what buffer to switch to when doing a split.
+
+#+begin_src emacs-lisp
 (defadvice! prompt-for-buffers (&rest _)
   :after '(evil-window-split evil-window-vsplit)
   (consult-buffer))
+#+end_src
 
+* Interface
+** Dashboard
+Switch to dashboard from doom-dashboard.
+
+#+begin_src emacs-lisp
 (setq doom-fallback-buffer-name "*dashboard*")
+#+end_src
 
+Configure dashboard
+
+#+begin_src emacs-lisp
 (use-package! dashboard
   :ensure t
   :init
@@ -96,22 +214,37 @@
             (lambda (&rest _) (doom/help)) warning))))
   :config
   (dashboard-setup-startup-hook))
+#+end_src
 
+** Info-Colors
+#+begin_src emacs-lisp
 (use-package! info-colors
   :commands (info-colors-fontify-node))
 
 (add-hook 'Info-selection-hook
           'info-colors-fontify-node)
+#+end_src
 
+** Modeline
+Enable nyan-cat in modeline.
+
+#+begin_src emacs-lisp
 (nyan-mode)
 (setq nyan-animate-nyancat t
       nyan-wavy-trail t)
+#+end_src
 
+Enable extra icons in doom-modeline.
+
+#+begin_src emacs-lisp
 (setq doom-modeline-enable-word-count t
       doom-modeline-persp-name t
       doom-modeline-persp-icon t
       doom-modeline-major-mode-icon t)
+#+end_src
 
+** Tabs
+#+begin_src emacs-lisp
 (after! centaur-tabs
   :ensure t
   :config
@@ -123,7 +256,11 @@
   (centaur-tabs-headline-match)
   (centaur-tabs-mode t)
   (centaur-tabs-group-by-projectile-project))
+#+end_src
+** SVG Tags
+Enable SVG tags in org mode.
 
+#+begin_src emacs-lisp
 (require 'svg-tag-mode)
 
 (defconst date-re "[0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}")
@@ -204,7 +341,11 @@
             (svg-tag-make tag :end -1 :inverse t :crop-left t :margin 0 :face 'org-date))))))
 
 (add-hook! 'org-mode-hook '(svg-tag-mode t))
+#+end_src
 
+* Programming
+** LSP
+#+begin_src emacs-lisp
 (setq lsp-enable-symbol-highlighting t
       lsp-ui-doc-enable t
       lsp-lens-enable t
@@ -214,7 +355,10 @@
       lsp-ui-sideline-enable t
       lsp-completion-show-detail t
       lsp-completion-show-kind t)
+#+end_src
 
+** Company
+#+begin_src emacs-lisp
 (add-hook 'after-init-hook 'global-company-mode)
 ;; from modules/completion/company/config.el
 (use-package! company
@@ -226,12 +370,21 @@
         company-dabbrev-downcase nil
         company-dabbrev-ignore-case nil)
   [...])
+#+end_src
 
+** Languages
+*** LaTeX
+#+begin_src emacs-lisp
 (require 'org)
 (add-to-list 'org-latex-packages-alist '("" "amsmath" t))
 (add-to-list 'org-latex-packages-alist '("" "amssymb" t))
 (setq org-preview-latex-default-process 'dvipng)
+#+end_src
 
+*** Emacs Lisp
+Set elisp evaluate keybindings.
+
+#+begin_src emacs-lisp
 (map! :leader
       (:prefix ("e" . "evaluate")
        :desc "Evaluate elisp in buffer"
@@ -244,9 +397,18 @@
        "l" #'eval-last-sexp
        :desc "Evaluate elisp in region"
        "r" #'eval-region))
+#+end_src
 
+*** Java
+Enable LSP mode for java.
+
+#+begin_src emacs-lisp
 (after! lsp-mode (require 'lsp-java))
+#+end_src
 
+Configure LSP java.
+
+#+begin_src emacs-lisp
 (after! lsp-java
   (add-hook 'java-mode-hook #'lsp)
   (add-hook 'java-mode-hook
@@ -261,17 +423,29 @@
 ;; (set-lsp-priority! 'eclipse-jdt .80)
 ;; (setq lsp-java-server-install-dir "/bin/jdtls")
 ;; (setq lsp-java-workspace-dir "~/Projects/java")
+#+end_src
 
+Display ansi colour codes in java output.
+
+#+begin_src emacs-lisp
 (after! text-mode
   (add-hook! 'text-mode-hook
     (unless (derived-mode-p 'org-mode)
       (with-silent-modifications
         (ansi-color-apply-on-region (point-min) (point-max) t)))))
+#+end_src
+* Spotify
+Enable smudge.
 
+#+begin_src emacs-lisp
 (require 'smudge)
 (load! "spotify-credentials.el")
 (setq smudge-status-location 'modeline)
+#+end_src
 
+Keybindings
+
+#+begin_src emacs-lisp
 (map! :leader
       (:prefix ("m" . "music")
        :desc "Toggle shuffle"
@@ -288,7 +462,11 @@
        "m" #'smudge-my-playlists
        :desc "Select playback device"
        "d" #'smudge-select-device))
+#+end_src
 
+Playlist keybindings.
+
+#+begin_src emacs-lisp
 (map! :leader
       (:prefix ("m p" . "playlists")
        :desc "Featured playlists"
@@ -299,14 +477,22 @@
        "u" #'smudge-user-playlists
        :desc "Create new playlist"
        "c" #'smudge-create-playlist))
+#+end_src
 
+Track keybindings.
+
+#+begin_src emacs-lisp
 (map! :leader
       (:prefix ("m t" . "tracks")
        :desc "List recently played tracks"
        "r" #'smudge-recently-played
        :desc "Search for trakcs"
        "s" #'smudge-track-search))
+#+end_src
 
+Volume keybindings.
+
+#+begin_src emacs-lisp
 (map! :leader
       (:prefix ("m v" . "volume")
        :desc "Increase volume"
@@ -315,20 +501,42 @@
        "d" #'smudge-controller-volume-down
        :desc "Toggle mute"
        "m" #'smudge-controller-voume-mute-unmute))
+#+end_src
 
+* Evil Mode
+Raise undo limit to 80mb.
+
+#+begin_src emacs-lisp
 (setq undo-limit 80000000)
+#+end_src
 
+Grandular changes when in insert mode
+
+#+begin_src emacs-lisp
 (setq evil-want-fine-undo t)
+#+end_src
 
+* Org
+** Org Mode
+*** View
+#+begin_src emacs-lisp
 (setq org-directory "~/Org"
       org-use-property-inheritance t ; fix weird issue with src blocks
       org-startup-with-inline-images t
       org-startup-with-latex-preview t)
+#+end_src
 
+*** Org Agenda
+#+begin_src emacs-lisp
 (after! org
   (setq org-agenda-files
         '("~/Org/" "~/Documents/Org/agenda.org")))
+#+end_src
 
+*** Ansi Colour Codes
+Display ansi colour codes in org babel results.
+
+#+begin_src emacs-lisp
 (defun my/babel-ansi ()
   (when-let ((beg (org-babel-where-is-src-block-result nil nil)))
     (save-excursion
@@ -338,10 +546,17 @@
               (ansi-color-context-region nil))
           (ansi-color-apply-on-region beg end))))))
 (add-hook 'org-babel-after-execute-hook 'my/babel-ansi)
+#+end_src
 
+** Org Roam
+*** Roam Directories
+#+begin_src emacs-lisp
 (setq org-roam-directory "~/RoamNotes"
       org-attach-id-dir "attachments/")
+#+end_src
 
+*** Roam UI
+#+begin_src emacs-lisp
 (use-package! websocket
   :after org-roam)
 
@@ -358,3 +573,4 @@
         org-roam-ui-open-on-start t))
 
 (setq org-roam-database-connector 'sqlite3)
+#+end_src
