@@ -1,6 +1,7 @@
 #+title: Doom Emacs Config
 #+author: Michael Neuper
-#+options: toc:4
+
+#+toc: :ALL:
 
 * Doom
 #+begin_src emacs-lisp
