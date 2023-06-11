@@ -29,10 +29,25 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-(setq doom-theme 'doom-one)
-
 (setq doom-localleader-key "SPC l"
       doom-localleader-alt-key "M-SPC l")
+
+;; (setq auto-save-default t
+;;       make-backup-files t)
+
+(setq confirm-kill-emacs nil)
+
+(setq user-full-name "Michael Neuper"
+      user-mail-address "michael@michaelneuper.com")
+
+(setq evil-split-window-below t
+      evil-vsplit-window-right t)
+
+(defadvice! prompt-for-buffers (&rest _)
+  :after '(evil-window-split evil-window-vsplit)
+  (consult-buffer))
+
+(setq doom-theme 'doom-one)
 
 (custom-set-faces!
   '(doom-dashboard-banner :inherit default)
@@ -46,20 +61,12 @@
 (setq display-fill-column-indicator-column 80)
 (add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
 
-;; (setq auto-save-default t
-;;       make-backup-files t)
-
-(setq confirm-kill-emacs nil)
-
 (when (version< "29.0.50" emacs-version)
   (pixel-scroll-precision-mode))
 
 ;; (unless (eq system-type 'darwin)
 ;;   (require 'good-scroll)
 ;;   (good-scroll-mode 1))
-
-(setq user-full-name "Michael Neuper"
-      user-mail-address "michael@michaelneuper.com")
 
 (setq doom-font (font-spec :family "Fira Code" :size 12.5)
       doom-variable-pitch-font (font-spec :family "Noto Sans" :size 15))
@@ -85,12 +92,11 @@
             :list          nil
             )
 
-(setq evil-split-window-below t
-      evil-vsplit-window-right t)
+(use-package! info-colors
+  :commands (info-colors-fontify-node))
 
-(defadvice! prompt-for-buffers (&rest _)
-  :after '(evil-window-split evil-window-vsplit)
-  (consult-buffer))
+(add-hook 'Info-selection-hook
+          'info-colors-fontify-node)
 
 (setq doom-fallback-buffer-name "*dashboard*")
 
@@ -127,12 +133,6 @@
             (lambda (&rest _) (doom/help)) warning))))
   :config
   (dashboard-setup-startup-hook))
-
-(use-package! info-colors
-  :commands (info-colors-fontify-node))
-
-(add-hook 'Info-selection-hook
-          'info-colors-fontify-node)
 
 (nyan-mode)
 (setq nyan-animate-nyancat t
