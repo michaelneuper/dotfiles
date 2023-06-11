@@ -1,8 +1,6 @@
 #+title: Doom Emacs Config
 #+author: Michael Neuper
 
-#+toc: :ALL:
-
 * Doom
 #+begin_src emacs-lisp
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
