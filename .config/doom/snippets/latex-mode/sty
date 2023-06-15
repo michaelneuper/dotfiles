@@ -1,0 +1,53 @@
+# -*- mode: snippet -*-
+# name: custom .sty file
+# key: sty
+# --
+
+% ENCODING
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+% STYLES
+\usepackage{fancyhdr} % Fancy headers and footers
+\usepackage{csquotes} % Advanced inline display and quotes
+\usepackage{xcolor} % Add color support
+\usepackage{siunitx} % Proper formatting of units
+\usepackage[margin=1in]{geometry} % Better margin sizes
+\usepackage[colorlinks=true,
+            linkcolor=black,
+            citecolor=blue,
+            urlcolor=blue]{hyperref} % Hyperlinks
+
+% FONTS
+\usepackage{amsfonts, amsmath, amssymb} % Math fonts
+\usepackage{lmodern} % Changes font to lmodern
+\usepackage{microtype} % Just makes everything look better
+
+% LANGUAGE
+\usepackage[english]{babel} % Language setting
+% \usepackage{tipa} % Support for IPA
+
+% FIGURES
+% \usepackage{booktabs} % Better tables
+% \usepackage{tikz} % Drawing pictures
+% \usepackage{algorithm} % Add algorithms
+% \usepackage{pgfplots} % Plot graphs
+\usepackage{graphicx} % Support for adding images
+    \graphicspath{ {./images/} }
+% \usepackage{minted} % Code highlighting
+    % \usemintedstyle{emacs}
+
+% BIBLIOGRAPHY
+\usepackage[style=authoryear-ibid,
+            backend=biber]{biblatex} % Referencing
+    \addbibresource{bibliography.bib}
+
+\setlength{\headheight}{14.5pt}
+\addtolength{\topmargin}{-2.5pt}
+
+% PAGE STYLE
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\leftmark}
+ % \lhead{\rightmark}
+\rfoot{Page \thepage}
