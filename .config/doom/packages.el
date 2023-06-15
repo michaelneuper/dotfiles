@@ -56,18 +56,21 @@
 
 ;; GAMES
 (package! chess)
+(package! pacmacs)
 (package! monkeytype)
 
 ;; UI
 (package! dashboard)
 (package! nyan-mode)
-;; (package! good-scroll)
+(package! good-scroll)
 (package! svg-lib)
 (package! svg-tag-mode)
 (package! info-colors)
+(package! page-break-lines)
 
 ;; CODE
 (package! company-lsp)
+(package! company-tabnine)
 
 ;; UTILITY
 (package! suggest)
