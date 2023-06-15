@@ -7,7 +7,7 @@
 ;; The exceptions to this rule:
 ;;     - Setting file/directory variables (like `org-directory')
 ;;     - Setting variables which explicitly tell you to set them before their
-;;     package is loaded (see 'C-h v VARIABLE' to look up their documentation).
+;;         package is loaded (see 'C-h v VARIABLE' to look up their documentation).
 ;;     - Setting doom variables (which start with 'doom-' or '+').
 
 ;; Here are some additional functions/macros that will help you configure Doom.
@@ -16,8 +16,8 @@
 ;;     - `use-package!' for configuring packages
 ;;     - `after!' for running code after a package has loaded
 ;;     - `add-load-path!' for adding directories to the `load-path', relative to
-;;     this file. Emacs searches the `load-path' when you load packages with
-;;     `require' or `use-package'.
+;;          this file. Emacs searches the `load-path' when you load packages with
+;;         `require' or `use-package'.
 ;;     - `map!' for binding new keys
 
 ;; To get information about any of these functions/macros, move the cursor over
@@ -40,6 +40,8 @@
 (setq user-full-name "Michael Neuper"
       user-mail-address "michael@michaelneuper.com")
 
+(load! "api-keys.el")
+
 (setq evil-split-window-below t
       evil-vsplit-window-right t)
 
@@ -51,7 +53,8 @@
 
 (custom-set-faces!
   '(doom-dashboard-banner :inherit default)
-  '(doom-dashboard-loaded :inherit default))
+  '(doom-dashboard-loaded :inherit default)
+  '(dashboard-banner :inherrit default))
 
 (custom-set-faces!
   '(dashboard-startup-banner :inherit default))
@@ -61,8 +64,8 @@
 (setq display-fill-column-indicator-column 80)
 (add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
 
-(when (version< "29.0.50" emacs-version)
-  (pixel-scroll-precision-mode))
+;; (when (version< "29.0.50" emacs-version)
+;;   (pixel-scroll-precision-mode))
 
 ;; (unless (eq system-type 'darwin)
 ;;   (require 'good-scroll)
@@ -92,25 +95,100 @@
             :list          nil
             )
 
+(after! org
+  (setq org-ellipsis " ▾ ")
+  (appendq! +ligatures-extra-symbols
+            `(:checkbox      "☐"
+              :pending       "◼"
+              :checkedbox    "☑"
+              :list_property "∷"
+              :em_dash       "—"
+              :ellipses      "…"
+              :arrow_right   "→"
+              :arrow_left    "←"
+              :begin_quote   "❝"
+              :end_quote     "❞"
+              :header        "›"
+              :priority_a   ,(propertize "⚑" 'face 'all-the-icons-red)
+              :priority_b   ,(propertize "⬆" 'face 'all-the-icons-orange)
+              :priority_c   ,(propertize "■" 'face 'all-the-icons-yellow)
+              :priority_d   ,(propertize "⬇" 'face 'all-the-icons-green)
+              :priority_e   ,(propertize "❓" 'face 'all-the-icons-blue)
+              :roam_tags nil
+              :filetags nil))
+  (set-ligatures! 'org-mode
+    :merge t
+    :checkbox      "[ ]"
+    :pending       "[-]"
+    :checkedbox    "[X]"
+    :list_property "::"
+    :em_dash       "---"
+    :ellipsis      "..."
+    :arrow_right   "->"
+    :arrow_left    "<-"
+    :title         "#+title:"
+    :subtitle      "#+subtitle:"
+    :author        "#+author:"
+    :date          "#+date:"
+    :property      "#+property:"
+    :options       "#+options:"
+    :startup       "#+startup:"
+    :macro         "#+macro:"
+    :html_head     "#+html_head:"
+    :html          "#+html:"
+    :latex_class   "#+latex_class:"
+    :latex_header  "#+latex_header:"
+    :beamer_header "#+beamer_header:"
+    :latex         "#+latex:"
+    :attr_latex    "#+attr_latex:"
+    :attr_html     "#+attr_html:"
+    :attr_org      "#+attr_org:"
+    :begin_quote   "#+begin_quote"
+    :end_quote     "#+end_quote"
+    :caption       "#+caption:"
+    :header        "#+header:"
+    :begin_export  "#+begin_export"
+    :end_export    "#+end_export"
+    :results       "#+RESULTS:"
+    :property      ":PROPERTIES:"
+    :end           ":END:"
+    :priority_a    "[#A]"
+    :priority_b    "[#B]"
+    :priority_c    "[#C]"
+    :priority_d    "[#D]"
+    :priority_e    "[#E]"
+    :roam_tags     "#+roam_tags:"
+    :filetags      "#+filetags:")
+  (plist-put +ligatures-extra-symbols :name "⁍"))
+
 (use-package! info-colors
   :commands (info-colors-fontify-node))
 
 (add-hook 'Info-selection-hook
           'info-colors-fontify-node)
 
+(setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
 (setq doom-fallback-buffer-name "*dashboard*")
 
 (use-package! dashboard
-  :ensure t
+  :custom-face
+  (dashboard-heading ((t (:inherit (font-lock-string-face bold)))))
+  (dashboard-banner ((t (:inherit default))))
+  :hook
+  (dashboard-mode . (lambda ()
+                      ;; Enable `page-break-lines-mode'
+                      (when (fboundp 'page-break-lines-mode)
+                        (page-break-lines-mode 1))))
   :init
-  (setq dashboard-items '((recents . 3)
+  (setq dashboard-items '((recents . 4)
                           (projects . 3)
                           (bookmarks . 5))
         dashboard-show-shortcuts t
         dashboard-center-content t
-        dashboard-startup-banner (concat doom-user-dir
-                                         "doom-banners/splashes/emacs/M-x_butterfly.png")
-        dashboard-banner-logo-title "Welcome back to Emacs!"
+        dashboard-startup-banner 'official
+        ;; dashboard-startup-banner (concat doom-user-dir "doom-banners/splashes/emacs/emacs-e-logo.png")
+        dashboard-banner-logo-title "Welcome Back to Emacs!"
+        dashboard-page-separator "\n\f\n"
         dashboard-display-icons-p t
         dashboard-set-file-icons t
         dashboard-set-heading-icons t
@@ -134,14 +212,25 @@
   :config
   (dashboard-setup-startup-hook))
 
-(nyan-mode)
-(setq nyan-animate-nyancat t
-      nyan-wavy-trail t)
+(add-to-list 'recentf-exclude "~/Repos/dotfiles/.config/emacs/elpa")
+(add-to-list 'recentf-exclude "~/Repos/dotfiles/.config/emacs/.local/etc/workspaces/autosave")
+(add-to-list 'recentf-exclude "~/Repos/dotfiles/.config/emacs/bookmarks")
+(add-to-list 'recentf-exclude "~/Repos/dotfiles/.config/emacs/recentf")
+(add-to-list 'recentf-exclude "~/Repos/dotfiles/.config/emacs/ido.last")
+(add-to-list 'recentf-exclude "~/.cache/treemacs-persist")
 
-(setq doom-modeline-enable-word-count t
-      doom-modeline-persp-name t
-      doom-modeline-persp-icon t
-      doom-modeline-major-mode-icon t)
+(use-package! nyan-mode
+  :init
+  (nyan-mode)
+  :config
+  (setq nyan-animate-nyancat t
+        nyan-wavy-trail t))
+
+(after! doom-modeline
+  (setq doom-modeline-enable-word-count t
+        doom-modeline-persp-name t
+        doom-modeline-persp-icon t
+        doom-modeline-major-mode-icon t))
 
 (after! centaur-tabs
   :ensure t
@@ -184,6 +273,10 @@
         ;; Org tags :TAG1:TAG2:TAG3:
         (":\\([A-Za-z0-9]+\\)" . ((lambda (tag) (svg-tag-make tag))))
         (":\\([A-Za-z0-9]+[ \-]\\)" . ((lambda (tag) tag)))
+
+        ;; Org tags #+author
+        ("#\+\\([A-Za-z0-9]+\\)" . ((lambda (tag) (svg-tag-make tag))))
+        ("#\+\\([A-Za-z0-9]+[ \-]\\)" . ((lambda (tag) tag)))
 
         ;; Task priority [#A] [#B] [#C]
         ("\\[#[A-Z]\\]" . ( (lambda (tag)
@@ -234,17 +327,22 @@
          ((lambda (tag)
             (svg-tag-make tag :end -1 :inverse t :crop-left t :margin 0 :face 'org-date))))))
 
-(add-hook! 'org-mode-hook '(svg-tag-mode t))
+;; (add-hook! 'org-mode-hook '(svg-tag-mode t))
 
-(setq lsp-enable-symbol-highlighting t
-      lsp-ui-doc-enable t
-      lsp-lens-enable t
-      lsp-headerline-breadcrumb-enable t
-      lsp-modeline-code-actions-enable t
-      lsp-diagnostics-provider :flycheck
-      lsp-ui-sideline-enable t
-      lsp-completion-show-detail t
-      lsp-completion-show-kind t)
+(use-package! lsp-mode
+  :init
+  (setq lsp-enable-symbol-highlighting t
+        lsp-lens-enable t
+        lsp-headerline-breadcrumb-enable t
+        lsp-modeline-code-actions-enable t
+        lsp-diagnostics-provider :flycheck
+        lsp-completion-show-detail t
+        lsp-completion-show-kind t))
+
+(use-package! lsp-ui
+  :init
+  (setq lsp-ui-doc-enable t
+        lsp-ui-sideline-enable t))
 
 (add-hook 'after-init-hook 'global-company-mode)
 ;; from modules/completion/company/config.el
@@ -258,13 +356,28 @@
         company-dabbrev-ignore-case nil)
   [...])
 
-(require 'org)
-(add-to-list 'org-latex-packages-alist '("" "amsmath" t))
-(add-to-list 'org-latex-packages-alist '("" "amssymb" t))
-(setq org-preview-latex-default-process 'dvipng)
+;; (require 'company-tabnine)
+;; (add-to-list 'company-backends #'company-tabnine)
+
+;; (setq company-idle-delay 0
+;;       company-show-numbers t)
+
+(add-hook! 'latex-mode-hook
+  (setq TeX-engine 'xelatex) 99)
+
+(setq TeX-auto-save t
+      TeX-parse-self t)
+(setq-default TeX-master nil)
+
+(setq +latex-viewers '(pdf-tools zathura))
+
+(setq auto-revert-interval 0.5)
+
+(map! :map cdlatex-mode-map
+      :i "TAB" #'cdlatex-tab)
 
 (map! :after latex
-      :map latex-mode-map
+      :map cdlatex-mode-map
       :localleader
       :desc "Insert math symbol"
       "i" #'cdlatex-math-symbol
@@ -294,12 +407,25 @@
                     tab-width 4
                     indent-tabs-mode nil))))
 
-(setq lsp-java-format-on-type-enabled nil
-      lsp-java-format-enabled nil)
-;; Set path to the language server executable
-;; (set-lsp-priority! 'eclipse-jdt .80)
-;; (setq lsp-java-server-install-dir "/bin/jdtls")
-;; (setq lsp-java-workspace-dir "~/Projects/java")
+(map! :after lsp-java
+      :map java-mode-map
+      :localleader
+      :desc "Add missings imports"
+      "i" #'lsp-java-add-import
+      :desc "Organize imports"
+      "o" #'lsp-java-organize-imports
+      :desc "Build project"
+      "b" #'lsp-java-build-project
+      :desc "Add toString()"
+      "t" #'lsp-java-generate-to-string
+      :desc "Generate getters and setters"
+      "g" #'lsp-java-generate-getters-and-setters
+      :desc "Extract to method"
+      "m" #'lsp-java-extract-method
+      :desc "Extract to constant"
+      "c" #'lsp-java-extract-to-constant
+      :desc "Extract to local variable"
+      "v" #'lsp-java-extract-to-local-variable)
 
 (after! text-mode
   (add-hook! 'text-mode-hook
@@ -307,53 +433,56 @@
       (with-silent-modifications
         (ansi-color-apply-on-region (point-min) (point-max) t)))))
 
-(require 'smudge)
-(load! "spotify-credentials.el")
-(setq smudge-status-location 'modeline)
-
-(map! :leader
-      (:prefix ("m" . "music")
-       :desc "Toggle shuffle"
-       "s" #'smudge-controller-toggle-shuffle
-       :desc "Toggle repeat"
-       "r" #'smudge-controller-toggle-repeat
-       :desc "Play/pause"
-       "SPC" #'smudge-controller-toggle-play
-       :desc "Next track"
-       "f" #'smudge-controller-next-track
-       :desc "Previous track"
-       "b" #'smudge-controller-previous-track
-       :desc "My playlists"
-       "m" #'smudge-my-playlists
-       :desc "Select playback device"
-       "d" #'smudge-select-device))
-
-(map! :leader
-      (:prefix ("m p" . "playlists")
-       :desc "Featured playlists"
-       "f" #'smudge-featured-playlists
-       :desc "Search playlists"
-       "s" #'smudge-playlist-search
-       :desc "Show user's playlists"
-       "u" #'smudge-user-playlists
-       :desc "Create new playlist"
-       "c" #'smudge-create-playlist))
-
-(map! :leader
-      (:prefix ("m t" . "tracks")
-       :desc "List recently played tracks"
-       "r" #'smudge-recently-played
-       :desc "Search for trakcs"
-       "s" #'smudge-track-search))
-
-(map! :leader
-      (:prefix ("m v" . "volume")
-       :desc "Increase volume"
-       "u" #'smudge-controller-volume-up
-       :desc "Decrease volume"
-       "d" #'smudge-controller-volume-down
-       :desc "Toggle mute"
-       "m" #'smudge-controller-voume-mute-unmute))
+(use-package! smudge
+  :init
+  (setq smudge-status-location 'modeline
+        smudge-transport 'connect) ; requires spotify premium
+  :config
+  ;; General keybindings
+  (map! :leader
+        (:prefix ("m" . "music")
+         :desc "Toggle shuffle"
+         "s" #'smudge-controller-toggle-shuffle
+         :desc "Toggle repeat"
+         "r" #'smudge-controller-toggle-repeat
+         :desc "Play/pause"
+         "SPC" #'smudge-controller-toggle-play
+         :desc "Next track"
+         "f" #'smudge-controller-next-track
+         :desc "Next track"
+         "n" #'smudge-controller-next-track
+         :desc "Previous track"
+         "b" #'smudge-controller-previous-track
+         :desc "My playlists"
+         "m" #'smudge-my-playlists
+         :desc "Select playback device"))
+  ;; Playlist keybindings
+  (map! :leader
+        (:prefix ("m p" . "playlists")
+         :desc "Featured playlists"
+         "f" #'smudge-featured-playlists
+         :desc "Search playlists"
+         "s" #'smudge-playlist-search
+         :desc "Show user's playlists"
+         "u" #'smudge-user-playlists
+         :desc "Create new playlist"
+         "c" #'smudge-create-playlist))
+  ;; Track keybindings
+  (map! :leader
+        (:prefix ("m t" . "tracks")
+         :desc "List recently played tracks"
+         "r" #'smudge-recently-played
+         :desc "Search for trakcs"
+         "s" #'smudge-track-search))
+  ;; Volume keybindings
+  (map! :leader
+        (:prefix ("m v" . "volume")
+         :desc "Increase volume"
+         "u" #'smudge-controller-volume-up
+         :desc "Decrease volume"
+         "d" #'smudge-controller-volume-down
+         :desc "Toggle mute"
+         "m" #'smudge-controller-voume-mute-unmute)))
 
 (setq undo-limit 80000000)
 
@@ -363,6 +492,11 @@
       org-use-property-inheritance t ; fix weird issue with src blocks
       org-startup-with-inline-images t
       org-startup-with-latex-preview t)
+
+(require 'org)
+(add-to-list 'org-latex-packages-alist '("" "amsmath" t))
+(add-to-list 'org-latex-packages-alist '("" "amssymb" t))
+(setq org-preview-latex-default-process 'dvipng)
 
 (after! org
   (setq org-agenda-files
@@ -396,4 +530,4 @@
         org-roam-ui-update-on-save t
         org-roam-ui-open-on-start t))
 
-(setq org-roam-database-connector 'sqlite3)
+;; (setq org-roam-database-connector 'sqlite3)
