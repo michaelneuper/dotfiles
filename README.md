@@ -1,3 +1,5 @@
+**NOTE**: If you're looking for my latest doom emacs config, it has moved to [this repo](https://github.com/michaelneuper/doom).
+
 # Linux Dotfiles
 
 ![Window Manager](https://user-images.githubusercontent.com/73108749/233847131-2bf724b0-e80d-4cda-8398-cb0ed2e012f5.png)
