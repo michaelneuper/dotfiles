@@ -42,10 +42,25 @@ export LIBGS="/opt/homebrew/lib/libgs.dylib" # fix LaTeX rendering in emacs
 # Aliases
 
 if command -v bat >/dev/null 2>&1; then
-
     alias cat="bat --plain --theme=gruvbox-dark"
 fi
 
 alias v="vim"
 alias vim="emacs -nw"
 
+if command -v git-st >/dev/null 2>&1; then
+    alias gs="git-st"
+else
+    alias gs="git status --short --branch"
+fi
+
+alias gst="git status"
+alias ga="git add"
+alias gb="git branch"
+alias gbd="git branch -D"
+alias gcb="git checkout -b"
+alias gch="git checkout"
+alias gc="git commit -m"
+alias gp="git pull"
+alias gpu="git push"
+alias gl="git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
