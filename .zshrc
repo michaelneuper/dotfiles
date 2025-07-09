@@ -37,13 +37,15 @@ fi
 export PATH="$HOME/.config/emacs/bin:$PATH"
 export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
 
-HISTFILE=~/.zhistory
-HISTSIZE=50000
-SAVEHIST=10000
+export LIBGS="/opt/homebrew/lib/libgs.dylib" # fix LaTeX rendering in emacs
 
-alias cat="bat --plain --theme=gruvbox-dark"
+# Aliases
 
-# fix LaTeX rendering in emacs
-export LIBGS="/opt/homebrew/lib/libgs.dylib"
+if command -v bat >/dev/null 2>&1; then
 
-alias v="emacs -nw"
+    alias cat="bat --plain --theme=gruvbox-dark"
+fi
+
+alias v="vim"
+alias vim="emacs -nw"
+
