@@ -1,0 +1,88 @@
+[user]
+	name = Michael Neuper
+	email = michael@michaelneuper.com
+	username = michaelneuper
+	signingkey = ~/.ssh/id_ed25519_github.pub
+
+[core]
+	editor = nvim
+	whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
+	pager = delta
+
+[init]
+	defaultBranch = main
+
+[checkout]
+	defaultRemote = origin
+
+[gpg]
+	format = ssh
+
+[commit]
+	gpgSign = true
+
+[credential]
+	helper = osxkeychain
+
+[url "git@github.com:michaelneuper/"]
+	insteadOf = "my:"
+
+[url "git@github.com:"]
+	insteadOf = "gh:"
+
+[url "git@git.cs.sun.ac.za:Computer-Science/rw144/2024/"]
+	insteadOf = "cs144:"
+
+[url "git@git.cs.sun.ac.za:Computer-Science/rw214/2025/"]
+	insteadOf = "cs214:"
+
+[url "rw244-2025@gitolite.cs.sun.ac.za:27905551/"]
+    insteadOf = "cs244:"
+
+[credential "https://git.cs.sun.ac.za"]
+	provider = generic
+
+[color]
+	ui = auto
+
+[color "branch"]
+	current = yellow bold
+	local = green bold
+	remote = cyan bold
+
+[color "diff"]
+	meta = yellow bold
+	frag = magenta bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
+
+[color "status"]
+	added = green
+	changed = yellow
+	untracked = red
+
+[diff "org"]
+  xfuncname = "^(\\*+ +.*)$"
+
+[delta]
+	features = decorations
+	line-numbers = true
+	dark = true
+	side-by-side = false
+	syntax-theme = gruvbox-dark
+
+[delta "decorations"]
+	minus-style = red bold normal
+	plus-style = green bold normal
+	minus-emph-style = white bold red
+	minus-non-emph-style = red bold normal
+	plus-emph-style = white bold green
+	plus-non-emph-style = green bold normal
+	file-style = yellow bold none
+	file-decoration-style = yellow box
+	hunk-header-style = magenta bold
+	hunk-header-decoration-style = magenta box
+	minus-empty-line-marker-style = normal normal
+	plus-empty-line-marker-style = normal normal
+	line-numbers-right-format = "{np:^4}│ "
