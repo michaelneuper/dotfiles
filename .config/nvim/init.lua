@@ -97,6 +97,12 @@ require("gruvbox").setup({
 
 vim.cmd.colorscheme("gruvbox")
 
+require'nvim-treesitter.configs'.setup {
+  highlight = {
+    enable = true,
+  },
+}
+
 require("lualine").setup({
   options = {
     icons_enabled = true,
