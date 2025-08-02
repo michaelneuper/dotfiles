@@ -60,9 +60,9 @@ if command -v zoxide >/dev/null 2>&1; then
     alias cd="z"
 fi
 
-if command -v lsd >/dev/null 2>&1; then
-    alias ls="lsd -F"
-    alias ll="lsd -Fl"
+if command -v eza >/dev/null 2>&1; then
+    alias ls="eza -F --icons=auto --no-quotes"
+    alias ll="eza -F --long --no-user --icons=auto --no-quotes"
 else
     alias ls="ls -GF"
     alias ll="ls -GFl"
