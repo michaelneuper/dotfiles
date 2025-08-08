@@ -65,3 +65,5 @@ alias bs="brew search"
 alias bi="brew install"
 alias bic="brew install --cask"
 alias bu="brew update && brew upgrade"
+
+gsettings set org.gnome.desktop.input-sources xkb-options "['caps:escape']"
